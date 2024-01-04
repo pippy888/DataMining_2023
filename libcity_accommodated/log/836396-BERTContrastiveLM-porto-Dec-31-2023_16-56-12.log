@@ -1,0 +1,596 @@
+2023-12-31 16:56:12,061 - INFO - Log directory: ./libcity/log
+2023-12-31 16:56:12,061 - INFO - Begin pretrain-pipeline, task=trajectory_embedding, model_name=BERTContrastiveLM, dataset_name=porto, exp_id=836396
+2023-12-31 16:56:12,062 - INFO - {'task': 'trajectory_embedding', 'model': 'BERTContrastiveLM', 'dataset': 'porto', 'saved_model': True, 'train': True, 'gpu': True, 'gpu_id': 0, 'distribution': 'geometric', 'avg_mask_len': 2, 'contra_ratio': 0.4, 'mlm_ratio': 0.6, 'split': True, 'out_data_argument1': 'trim', 'out_data_argument2': 'shift', 'n_layers': 6, 'd_model': 256, 'attn_heads': 8, 'max_epoch': 30, 'batch_size': 64, 'grad_accmu_steps': 1, 'learning_rate': 0.0002, 'roadnetwork': 'porto_roadmap_edge_porto_True_1_merge', 'geo_file': 'porto_roadmap_edge_porto_True_1_merge_withdegree', 'rel_file': 'porto_roadmap_edge_porto_True_1_merge_withdegree', 'merge': True, 'min_freq': 1, 'seq_len': 128, 'test_every': 50, 'temperature': 0.05, 'contra_loss_type': 'simclr', 'classify_label': 'usrid', 'type_ln': 'post', 'add_cls': True, 'add_time_in_day': True, 'add_day_in_week': True, 'add_pe': True, 'add_temporal_bias': True, 'temporal_bias_dim': 64, 'use_mins_interval': False, 'add_gat': True, 'gat_heads_per_layer': [8, 16, 1], 'gat_features_per_layer': [16, 16, 256], 'gat_dropout': 0.1, 'gat_K': 1, 'gat_avg_last': True, 'load_trans_prob': True, 'append_degree2gcn': True, 'normal_feature': False, 'pooling': 'cls', 'dataset_class': 'ContrastiveSplitLMDataset', 'executor': 'ContrastiveSplitMLMExecutor', 'evaluator': 'ClassificationEvaluator', 'num_workers': 0, 'vocab_path': None, 'masking_ratio': 0.15, 'masking_mode': 'together', 'mlp_ratio': 4, 'pretrain_road_emb': None, 'future_mask': False, 'load_node2vec': False, 'dropout': 0.1, 'drop_path': 0.3, 'attn_drop': 0.1, 'seed': 0, 'learner': 'adamw', 'lr_eta_min': 0, 'lr_warmup_epoch': 4, 'lr_warmup_init': 1e-06, 'lr_decay': True, 'lr_scheduler': 'cosinelr', 'lr_decay_ratio': 0.1, 't_in_epochs': True, 'clip_grad_norm': True, 'max_grad_norm': 5, 'use_early_stop': True, 'patience': 10, 'log_batch': 500, 'log_every': 1, 'l2_reg': None, 'n_views': 2, 'similarity': 'cosine', 'data_argument1': [], 'data_argument2': [], 'cutoff_row_rate': 0.2, 'cutoff_column_rate': 0.2, 'cutoff_random_rate': 0.2, 'sample_rate': 0.2, 'align_w': 1.0, 'unif_w': 1.0, 'align_alpha': 2, 'unif_t': 2, 'train_align_uniform': False, 'test_align_uniform': True, 'norm_align_uniform': False, 'bidir_adj_mx': False, 'metrics': ['Precision', 'Recall', 'F1', 'MRR', 'NDCG'], 'save_modes': ['csv', 'json'], 'topk': [1, 5, 10], 'device': device(type='cuda', index=0), 'exp_id': 836396}
+2023-12-31 16:56:12,581 - INFO - Loading Vocab from raw_data/vocab_porto_True_1_merge.pkl
+2023-12-31 16:56:12,584 - INFO - vocab_path=raw_data/vocab_porto_True_1_merge.pkl, usr_num=437, vocab_size=10907
+2023-12-31 16:56:12,605 - INFO - Loaded file porto_roadmap_edge_porto_True_1_merge_withdegree.geo, num_nodes=10903
+2023-12-31 16:56:12,871 - INFO - Loaded file porto_roadmap_edge_porto_True_1_merge_withdegree.rel, shape=(10903, 10903), edges=25369.0
+2023-12-31 16:56:12,874 - INFO - node_features: (10903, 43)
+2023-12-31 16:56:13,882 - INFO - node_features_encoded: torch.Size([10907, 43])
+2023-12-31 16:56:13,936 - INFO - edge_index: torch.Size([2, 36218])
+2023-12-31 16:56:13,937 - INFO - Trajectory loc-transfer prob shape=torch.Size([36218, 1])
+2023-12-31 16:56:13,940 - INFO - Loading Dataset!
+2023-12-31 16:56:13,942 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:13,952 - INFO - Init TrajectoryProcessingDatasetSplitLM!
+2023-12-31 16:56:13,955 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:13,963 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:13,973 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:13,981 - INFO - Init TrajectoryProcessingDatasetSplitLM!
+2023-12-31 16:56:13,983 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:13,989 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:13,997 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:14,006 - INFO - Init TrajectoryProcessingDatasetSplitLM!
+2023-12-31 16:56:14,008 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:14,016 - INFO - Processing dataset in TrajectoryProcessingDataset!
+2023-12-31 16:56:14,024 - INFO - Size of dataset: 9/9/9
+2023-12-31 16:56:14,024 - INFO - Creating Dataloader!
+2023-12-31 16:56:14,027 - INFO - Building BERTContrastiveLM model
+2023-12-31 16:56:14,070 - INFO - Building BERTPooler model
+2023-12-31 16:56:14,724 - INFO - BERTContrastiveLM(
+  (bert): BERT(
+    (embedding): BERTEmbedding(
+      (token_embedding): GAT(
+        (gat_net): Sequential(
+          (0): GATLayerImp3(
+            (linear_proj): Linear(in_features=43, out_features=128, bias=False)
+            (linear_proj_tran_prob): Linear(in_features=1, out_features=128, bias=False)
+            (skip_proj): Linear(in_features=43, out_features=128, bias=False)
+            (leakyReLU): LeakyReLU(negative_slope=0.2)
+            (softmax): Softmax(dim=-1)
+            (activation): ELU(alpha=1.0)
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (1): GATLayerImp3(
+            (linear_proj): Linear(in_features=128, out_features=256, bias=False)
+            (linear_proj_tran_prob): Linear(in_features=1, out_features=256, bias=False)
+            (skip_proj): Linear(in_features=128, out_features=256, bias=False)
+            (leakyReLU): LeakyReLU(negative_slope=0.2)
+            (softmax): Softmax(dim=-1)
+            (activation): ELU(alpha=1.0)
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (2): GATLayerImp3(
+            (linear_proj): Linear(in_features=256, out_features=256, bias=False)
+            (linear_proj_tran_prob): Linear(in_features=1, out_features=256, bias=False)
+            (skip_proj): Linear(in_features=256, out_features=256, bias=False)
+            (leakyReLU): LeakyReLU(negative_slope=0.2)
+            (softmax): Softmax(dim=-1)
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+        )
+      )
+      (position_embedding): PositionalEmbedding()
+      (daytime_embedding): Embedding(1441, 256, padding_idx=0)
+      (weekday_embedding): Embedding(8, 256, padding_idx=0)
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (transformer_blocks): ModuleList(
+      (0): TransformerBlock(
+        (attention): MultiHeadedAttention(
+          (linear_layers): ModuleList(
+            (0): Linear(in_features=256, out_features=256, bias=True)
+            (1): Linear(in_features=256, out_features=256, bias=True)
+            (2): Linear(in_features=256, out_features=256, bias=True)
+          )
+          (dropout): Dropout(p=0.1, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.1, inplace=False)
+          (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+          (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+        )
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop): Dropout(p=0.1, inplace=False)
+        )
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop_path): Identity()
+      )
+      (1): TransformerBlock(
+        (attention): MultiHeadedAttention(
+          (linear_layers): ModuleList(
+            (0): Linear(in_features=256, out_features=256, bias=True)
+            (1): Linear(in_features=256, out_features=256, bias=True)
+            (2): Linear(in_features=256, out_features=256, bias=True)
+          )
+          (dropout): Dropout(p=0.1, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.1, inplace=False)
+          (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+          (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+        )
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop): Dropout(p=0.1, inplace=False)
+        )
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop_path): DropPath()
+      )
+      (2): TransformerBlock(
+        (attention): MultiHeadedAttention(
+          (linear_layers): ModuleList(
+            (0): Linear(in_features=256, out_features=256, bias=True)
+            (1): Linear(in_features=256, out_features=256, bias=True)
+            (2): Linear(in_features=256, out_features=256, bias=True)
+          )
+          (dropout): Dropout(p=0.1, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.1, inplace=False)
+          (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+          (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+        )
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop): Dropout(p=0.1, inplace=False)
+        )
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop_path): DropPath()
+      )
+      (3): TransformerBlock(
+        (attention): MultiHeadedAttention(
+          (linear_layers): ModuleList(
+            (0): Linear(in_features=256, out_features=256, bias=True)
+            (1): Linear(in_features=256, out_features=256, bias=True)
+            (2): Linear(in_features=256, out_features=256, bias=True)
+          )
+          (dropout): Dropout(p=0.1, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.1, inplace=False)
+          (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+          (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+        )
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop): Dropout(p=0.1, inplace=False)
+        )
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop_path): DropPath()
+      )
+      (4): TransformerBlock(
+        (attention): MultiHeadedAttention(
+          (linear_layers): ModuleList(
+            (0): Linear(in_features=256, out_features=256, bias=True)
+            (1): Linear(in_features=256, out_features=256, bias=True)
+            (2): Linear(in_features=256, out_features=256, bias=True)
+          )
+          (dropout): Dropout(p=0.1, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.1, inplace=False)
+          (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+          (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+        )
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop): Dropout(p=0.1, inplace=False)
+        )
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop_path): DropPath()
+      )
+      (5): TransformerBlock(
+        (attention): MultiHeadedAttention(
+          (linear_layers): ModuleList(
+            (0): Linear(in_features=256, out_features=256, bias=True)
+            (1): Linear(in_features=256, out_features=256, bias=True)
+            (2): Linear(in_features=256, out_features=256, bias=True)
+          )
+          (dropout): Dropout(p=0.1, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (proj_drop): Dropout(p=0.1, inplace=False)
+          (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+          (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+        )
+        (mlp): Mlp(
+          (fc1): Linear(in_features=256, out_features=1024, bias=True)
+          (act): GELU()
+          (fc2): Linear(in_features=1024, out_features=256, bias=True)
+          (drop): Dropout(p=0.1, inplace=False)
+        )
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (drop_path): DropPath()
+      )
+    )
+  )
+  (mask_l): MaskedLanguageModel(
+    (linear): Linear(in_features=256, out_features=10907, bias=True)
+    (softmax): LogSoftmax(dim=-1)
+  )
+  (pooler): BERTPooler(
+    (linear): MLPLayer(
+      (dense): Linear(in_features=256, out_features=256, bias=True)
+      (activation): Tanh()
+    )
+  )
+)
+2023-12-31 16:56:14,727 - INFO - bert.embedding.token_embedding.gat_net.0.scoring_fn_target	torch.Size([1, 8, 16])	cuda:0	True
+2023-12-31 16:56:14,727 - INFO - bert.embedding.token_embedding.gat_net.0.scoring_fn_source	torch.Size([1, 8, 16])	cuda:0	True
+2023-12-31 16:56:14,728 - INFO - bert.embedding.token_embedding.gat_net.0.scoring_trans_prob	torch.Size([1, 8, 16])	cuda:0	True
+2023-12-31 16:56:14,728 - INFO - bert.embedding.token_embedding.gat_net.0.bias	torch.Size([128])	cuda:0	True
+2023-12-31 16:56:14,728 - INFO - bert.embedding.token_embedding.gat_net.0.linear_proj.weight	torch.Size([128, 43])	cuda:0	True
+2023-12-31 16:56:14,728 - INFO - bert.embedding.token_embedding.gat_net.0.linear_proj_tran_prob.weight	torch.Size([128, 1])	cuda:0	True
+2023-12-31 16:56:14,728 - INFO - bert.embedding.token_embedding.gat_net.0.skip_proj.weight	torch.Size([128, 43])	cuda:0	True
+2023-12-31 16:56:14,728 - INFO - bert.embedding.token_embedding.gat_net.1.scoring_fn_target	torch.Size([1, 16, 16])	cuda:0	True
+2023-12-31 16:56:14,728 - INFO - bert.embedding.token_embedding.gat_net.1.scoring_fn_source	torch.Size([1, 16, 16])	cuda:0	True
+2023-12-31 16:56:14,728 - INFO - bert.embedding.token_embedding.gat_net.1.scoring_trans_prob	torch.Size([1, 16, 16])	cuda:0	True
+2023-12-31 16:56:14,729 - INFO - bert.embedding.token_embedding.gat_net.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,729 - INFO - bert.embedding.token_embedding.gat_net.1.linear_proj.weight	torch.Size([256, 128])	cuda:0	True
+2023-12-31 16:56:14,729 - INFO - bert.embedding.token_embedding.gat_net.1.linear_proj_tran_prob.weight	torch.Size([256, 1])	cuda:0	True
+2023-12-31 16:56:14,729 - INFO - bert.embedding.token_embedding.gat_net.1.skip_proj.weight	torch.Size([256, 128])	cuda:0	True
+2023-12-31 16:56:14,729 - INFO - bert.embedding.token_embedding.gat_net.2.scoring_fn_target	torch.Size([1, 1, 256])	cuda:0	True
+2023-12-31 16:56:14,729 - INFO - bert.embedding.token_embedding.gat_net.2.scoring_fn_source	torch.Size([1, 1, 256])	cuda:0	True
+2023-12-31 16:56:14,729 - INFO - bert.embedding.token_embedding.gat_net.2.scoring_trans_prob	torch.Size([1, 1, 256])	cuda:0	True
+2023-12-31 16:56:14,729 - INFO - bert.embedding.token_embedding.gat_net.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,730 - INFO - bert.embedding.token_embedding.gat_net.2.linear_proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,730 - INFO - bert.embedding.token_embedding.gat_net.2.linear_proj_tran_prob.weight	torch.Size([256, 1])	cuda:0	True
+2023-12-31 16:56:14,730 - INFO - bert.embedding.token_embedding.gat_net.2.skip_proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,730 - INFO - bert.embedding.daytime_embedding.weight	torch.Size([1441, 256])	cuda:0	True
+2023-12-31 16:56:14,730 - INFO - bert.embedding.weekday_embedding.weight	torch.Size([8, 256])	cuda:0	True
+2023-12-31 16:56:14,730 - INFO - bert.transformer_blocks.0.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,730 - INFO - bert.transformer_blocks.0.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,730 - INFO - bert.transformer_blocks.0.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,731 - INFO - bert.transformer_blocks.0.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,731 - INFO - bert.transformer_blocks.0.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,731 - INFO - bert.transformer_blocks.0.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,731 - INFO - bert.transformer_blocks.0.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,731 - INFO - bert.transformer_blocks.0.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,731 - INFO - bert.transformer_blocks.0.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 16:56:14,731 - INFO - bert.transformer_blocks.0.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 16:56:14,731 - INFO - bert.transformer_blocks.0.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,732 - INFO - bert.transformer_blocks.0.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,733 - INFO - bert.transformer_blocks.1.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 16:56:14,734 - INFO - bert.transformer_blocks.1.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 16:56:14,734 - INFO - bert.transformer_blocks.1.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 16:56:14,734 - INFO - bert.transformer_blocks.1.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 16:56:14,734 - INFO - bert.transformer_blocks.1.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 16:56:14,734 - INFO - bert.transformer_blocks.1.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 16:56:14,734 - INFO - bert.transformer_blocks.1.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 16:56:14,734 - INFO - bert.transformer_blocks.1.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,734 - INFO - bert.transformer_blocks.1.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,735 - INFO - bert.transformer_blocks.1.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,735 - INFO - bert.transformer_blocks.1.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,735 - INFO - bert.transformer_blocks.1.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,735 - INFO - bert.transformer_blocks.2.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,735 - INFO - bert.transformer_blocks.2.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,735 - INFO - bert.transformer_blocks.2.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,735 - INFO - bert.transformer_blocks.2.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,735 - INFO - bert.transformer_blocks.2.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 16:56:14,736 - INFO - bert.transformer_blocks.2.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 16:56:14,737 - INFO - bert.transformer_blocks.2.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 16:56:14,737 - INFO - bert.transformer_blocks.2.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,737 - INFO - bert.transformer_blocks.2.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,737 - INFO - bert.transformer_blocks.2.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,737 - INFO - bert.transformer_blocks.2.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,737 - INFO - bert.transformer_blocks.2.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,737 - INFO - bert.transformer_blocks.3.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,737 - INFO - bert.transformer_blocks.3.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,738 - INFO - bert.transformer_blocks.3.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,738 - INFO - bert.transformer_blocks.3.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,738 - INFO - bert.transformer_blocks.3.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,738 - INFO - bert.transformer_blocks.3.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,738 - INFO - bert.transformer_blocks.3.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,738 - INFO - bert.transformer_blocks.3.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,738 - INFO - bert.transformer_blocks.3.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 16:56:14,738 - INFO - bert.transformer_blocks.3.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,739 - INFO - bert.transformer_blocks.3.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.3.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.4.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.4.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.4.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.4.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.4.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.4.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.4.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,740 - INFO - bert.transformer_blocks.4.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,741 - INFO - bert.transformer_blocks.4.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.4.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.4.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.4.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.5.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.5.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.5.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.5.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.5.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,742 - INFO - bert.transformer_blocks.5.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 16:56:14,743 - INFO - bert.transformer_blocks.5.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 16:56:14,744 - INFO - bert.transformer_blocks.5.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,744 - INFO - bert.transformer_blocks.5.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,744 - INFO - bert.transformer_blocks.5.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,744 - INFO - bert.transformer_blocks.5.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,744 - INFO - bert.transformer_blocks.5.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,744 - INFO - mask_l.linear.weight	torch.Size([10907, 256])	cuda:0	True
+2023-12-31 16:56:14,744 - INFO - mask_l.linear.bias	torch.Size([10907])	cuda:0	True
+2023-12-31 16:56:14,744 - INFO - pooler.linear.dense.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 16:56:14,745 - INFO - pooler.linear.dense.bias	torch.Size([256])	cuda:0	True
+2023-12-31 16:56:14,745 - INFO - Total parameter numbers: 8190369
+2023-12-31 16:56:14,745 - INFO - You select `adamw` optimizer.
+2023-12-31 16:56:14,747 - INFO - You select `cosinelr` lr_scheduler.
+2023-12-31 16:56:14,753 - INFO - Start training ...
+2023-12-31 16:56:14,753 - INFO - Num_batches: train=1, eval=1
+2023-12-31 16:56:15,650 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 0, 'lr': 1e-06, 'Loc acc(%)': 0.0, 'MLM loss': 9.383515357971191, 'Contrastive loss': 2.1371023654937744, 'align_loss': 32.23843002319336, 'uniform_loss': -50.09104919433594}
+2023-12-31 16:56:15,650 - INFO - Train: expid = 836396, Epoch = 0, avg_loss = 6.484950065612793, total_loc_acc = 0.0%.
+2023-12-31 16:56:15,651 - INFO - epoch complete!
+2023-12-31 16:56:15,651 - INFO - evaluating now!
+2023-12-31 16:56:15,719 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 0, 'lr': 1e-06, 'Loc acc(%)': 0.0, 'MLM loss': 9.35357666015625, 'Contrastive loss': 1.4149912595748901, 'align_loss': 0.27285271883010864, 'uniform_loss': -13.166399002075195}
+2023-12-31 16:56:15,720 - INFO - Eval: expid = 836396, Epoch = 0, avg_loss = 6.17814302444458, total_loc_acc = 0.0%.
+2023-12-31 16:56:15,720 - INFO - Epoch [0/30] (1)  train_loss: 6.4850, val_loss: 6.1781, lr: 0.000051, 0.97s
+2023-12-31 16:56:15,977 - INFO - Saved model at 0
+2023-12-31 16:56:15,977 - INFO - Val loss decrease from inf to 6.1781, saving to ./libcity/cache/836396/model_cache/BERTContrastiveLM_porto_epoch0.tar
+2023-12-31 16:56:16,204 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 0, 'lr': 5.075e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.31965446472168, 'Contrastive loss': 2.551894187927246, 'align_loss': 34.03275680541992, 'uniform_loss': -57.32054901123047}
+2023-12-31 16:56:16,205 - INFO - Train: expid = 836396, Epoch = 1, avg_loss = 6.612550735473633, total_loc_acc = 0.0%.
+2023-12-31 16:56:16,206 - INFO - epoch complete!
+2023-12-31 16:56:16,206 - INFO - evaluating now!
+2023-12-31 16:56:16,282 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 0, 'lr': 5.075e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.413897514343262, 'Contrastive loss': 1.4114447832107544, 'align_loss': 0.2734428644180298, 'uniform_loss': -13.192976951599121}
+2023-12-31 16:56:16,283 - INFO - Eval: expid = 836396, Epoch = 1, avg_loss = 6.212916851043701, total_loc_acc = 0.0%.
+2023-12-31 16:56:16,283 - INFO - Epoch [1/30] (2)  train_loss: 6.6126, val_loss: 6.2129, lr: 0.000101, 0.30s
+2023-12-31 16:56:16,496 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 0, 'lr': 0.0001005, 'Loc acc(%)': 0.0, 'MLM loss': 9.559053421020508, 'Contrastive loss': 1.9463778734207153, 'align_loss': 30.74399185180664, 'uniform_loss': -54.909393310546875}
+2023-12-31 16:56:16,497 - INFO - Train: expid = 836396, Epoch = 2, avg_loss = 6.513983249664307, total_loc_acc = 0.0%.
+2023-12-31 16:56:16,498 - INFO - epoch complete!
+2023-12-31 16:56:16,498 - INFO - evaluating now!
+2023-12-31 16:56:16,574 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 0, 'lr': 0.0001005, 'Loc acc(%)': 0.0, 'MLM loss': 9.584477424621582, 'Contrastive loss': 1.4090957641601562, 'align_loss': 0.274297297000885, 'uniform_loss': -13.229185104370117}
+2023-12-31 16:56:16,574 - INFO - Eval: expid = 836396, Epoch = 2, avg_loss = 6.314324855804443, total_loc_acc = 0.0%.
+2023-12-31 16:56:16,575 - INFO - Epoch [2/30] (3)  train_loss: 6.5140, val_loss: 6.3143, lr: 0.000150, 0.29s
+2023-12-31 16:56:16,775 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 0, 'lr': 0.00015025000000000002, 'Loc acc(%)': 0.0, 'MLM loss': 9.477910995483398, 'Contrastive loss': 2.256664752960205, 'align_loss': 36.6559944152832, 'uniform_loss': -58.167842864990234}
+2023-12-31 16:56:16,775 - INFO - Train: expid = 836396, Epoch = 3, avg_loss = 6.589412689208984, total_loc_acc = 0.0%.
+2023-12-31 16:56:16,777 - INFO - epoch complete!
+2023-12-31 16:56:16,777 - INFO - evaluating now!
+2023-12-31 16:56:16,843 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 0, 'lr': 0.00015025000000000002, 'Loc acc(%)': 0.0, 'MLM loss': 9.412679672241211, 'Contrastive loss': 1.399069905281067, 'align_loss': 0.2784692645072937, 'uniform_loss': -13.412221908569336}
+2023-12-31 16:56:16,844 - INFO - Eval: expid = 836396, Epoch = 3, avg_loss = 6.207235813140869, total_loc_acc = 0.0%.
+2023-12-31 16:56:16,844 - INFO - Epoch [3/30] (4)  train_loss: 6.5894, val_loss: 6.2072, lr: 0.000191, 0.27s
+2023-12-31 16:56:17,037 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 0, 'lr': 0.0001913545457642601, 'Loc acc(%)': 0.0, 'MLM loss': 9.400177955627441, 'Contrastive loss': 2.268461227416992, 'align_loss': 36.30228042602539, 'uniform_loss': -65.37145233154297}
+2023-12-31 16:56:17,038 - INFO - Train: expid = 836396, Epoch = 4, avg_loss = 6.547491550445557, total_loc_acc = 0.0%.
+2023-12-31 16:56:17,039 - INFO - epoch complete!
+2023-12-31 16:56:17,039 - INFO - evaluating now!
+2023-12-31 16:56:17,106 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 0, 'lr': 0.0001913545457642601, 'Loc acc(%)': 0.0, 'MLM loss': 9.518524169921875, 'Contrastive loss': 1.3948633670806885, 'align_loss': 0.2824314534664154, 'uniform_loss': -13.628966331481934}
+2023-12-31 16:56:17,107 - INFO - Eval: expid = 836396, Epoch = 4, avg_loss = 6.269060134887695, total_loc_acc = 0.0%.
+2023-12-31 16:56:17,107 - INFO - Epoch [4/30] (5)  train_loss: 6.5475, val_loss: 6.2691, lr: 0.000187, 0.26s
+2023-12-31 16:56:17,294 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 0, 'lr': 0.00018660254037844388, 'Loc acc(%)': 0.0, 'MLM loss': 9.477612495422363, 'Contrastive loss': 1.7830740213394165, 'align_loss': 38.35108184814453, 'uniform_loss': -79.37712860107422}
+2023-12-31 16:56:17,295 - INFO - Train: expid = 836396, Epoch = 5, avg_loss = 6.399797439575195, total_loc_acc = 0.0%.
+2023-12-31 16:56:17,296 - INFO - epoch complete!
+2023-12-31 16:56:17,296 - INFO - evaluating now!
+2023-12-31 16:56:17,363 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 0, 'lr': 0.00018660254037844388, 'Loc acc(%)': 0.0, 'MLM loss': 9.120551109313965, 'Contrastive loss': 1.389897108078003, 'align_loss': 0.2862141728401184, 'uniform_loss': -13.900002479553223}
+2023-12-31 16:56:17,364 - INFO - Eval: expid = 836396, Epoch = 5, avg_loss = 6.028289794921875, total_loc_acc = 0.0%.
+2023-12-31 16:56:17,364 - INFO - Epoch [5/30] (6)  train_loss: 6.3998, val_loss: 6.0283, lr: 0.000181, 0.26s
+2023-12-31 16:56:17,602 - INFO - Saved model at 5
+2023-12-31 16:56:17,602 - INFO - Val loss decrease from 6.1781 to 6.0283, saving to ./libcity/cache/836396/model_cache/BERTContrastiveLM_porto_epoch5.tar
+2023-12-31 16:56:17,781 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 0, 'lr': 0.00018090169943749476, 'Loc acc(%)': 0.0, 'MLM loss': 9.339658737182617, 'Contrastive loss': 1.2891873121261597, 'align_loss': 35.52838134765625, 'uniform_loss': -79.45535278320312}
+2023-12-31 16:56:17,782 - INFO - Train: expid = 836396, Epoch = 6, avg_loss = 6.119470596313477, total_loc_acc = 0.0%.
+2023-12-31 16:56:17,783 - INFO - epoch complete!
+2023-12-31 16:56:17,783 - INFO - evaluating now!
+2023-12-31 16:56:17,846 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 0, 'lr': 0.00018090169943749476, 'Loc acc(%)': 0.0, 'MLM loss': 9.28983211517334, 'Contrastive loss': 1.3744653463363647, 'align_loss': 0.2904384434223175, 'uniform_loss': -14.252450942993164}
+2023-12-31 16:56:17,847 - INFO - Eval: expid = 836396, Epoch = 6, avg_loss = 6.123685359954834, total_loc_acc = 0.0%.
+2023-12-31 16:56:17,847 - INFO - Epoch [6/30] (7)  train_loss: 6.1195, val_loss: 6.1237, lr: 0.000174, 0.24s
+2023-12-31 16:56:18,028 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 0, 'lr': 0.00017431448254773944, 'Loc acc(%)': 0.0, 'MLM loss': 9.296238899230957, 'Contrastive loss': 0.9414060115814209, 'align_loss': 35.929779052734375, 'uniform_loss': -71.63435363769531}
+2023-12-31 16:56:18,029 - INFO - Train: expid = 836396, Epoch = 7, avg_loss = 5.954306125640869, total_loc_acc = 0.0%.
+2023-12-31 16:56:18,030 - INFO - epoch complete!
+2023-12-31 16:56:18,030 - INFO - evaluating now!
+2023-12-31 16:56:18,093 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 0, 'lr': 0.00017431448254773944, 'Loc acc(%)': 0.0, 'MLM loss': 9.417898178100586, 'Contrastive loss': 1.3654402494430542, 'align_loss': 0.29370561242103577, 'uniform_loss': -14.637449264526367}
+2023-12-31 16:56:18,094 - INFO - Eval: expid = 836396, Epoch = 7, avg_loss = 6.196915149688721, total_loc_acc = 0.0%.
+2023-12-31 16:56:18,094 - INFO - Epoch [7/30] (8)  train_loss: 5.9543, val_loss: 6.1969, lr: 0.000167, 0.25s
+2023-12-31 16:56:18,276 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 0, 'lr': 0.00016691306063588583, 'Loc acc(%)': 0.0, 'MLM loss': 9.104694366455078, 'Contrastive loss': 0.9608117341995239, 'align_loss': 38.06779861450195, 'uniform_loss': -88.16322326660156}
+2023-12-31 16:56:18,277 - INFO - Train: expid = 836396, Epoch = 8, avg_loss = 5.847141265869141, total_loc_acc = 0.0%.
+2023-12-31 16:56:18,278 - INFO - epoch complete!
+2023-12-31 16:56:18,278 - INFO - evaluating now!
+2023-12-31 16:56:18,341 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 0, 'lr': 0.00016691306063588583, 'Loc acc(%)': 0.0, 'MLM loss': 9.361108779907227, 'Contrastive loss': 1.3548450469970703, 'align_loss': 0.2985055148601532, 'uniform_loss': -15.039443016052246}
+2023-12-31 16:56:18,342 - INFO - Eval: expid = 836396, Epoch = 8, avg_loss = 6.158603191375732, total_loc_acc = 0.0%.
+2023-12-31 16:56:18,342 - INFO - Epoch [8/30] (9)  train_loss: 5.8471, val_loss: 6.1586, lr: 0.000159, 0.25s
+2023-12-31 16:56:18,524 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 0, 'lr': 0.00015877852522924732, 'Loc acc(%)': 0.0, 'MLM loss': 9.214179992675781, 'Contrastive loss': 0.5882235169410706, 'align_loss': 35.08187484741211, 'uniform_loss': -87.52775573730469}
+2023-12-31 16:56:18,525 - INFO - Train: expid = 836396, Epoch = 9, avg_loss = 5.763797760009766, total_loc_acc = 0.0%.
+2023-12-31 16:56:18,526 - INFO - epoch complete!
+2023-12-31 16:56:18,526 - INFO - evaluating now!
+2023-12-31 16:56:18,589 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 0, 'lr': 0.00015877852522924732, 'Loc acc(%)': 0.0, 'MLM loss': 9.449088096618652, 'Contrastive loss': 1.3381524085998535, 'align_loss': 0.3033200204372406, 'uniform_loss': -15.466955184936523}
+2023-12-31 16:56:18,590 - INFO - Eval: expid = 836396, Epoch = 9, avg_loss = 6.204714298248291, total_loc_acc = 0.0%.
+2023-12-31 16:56:18,590 - INFO - Epoch [9/30] (10)  train_loss: 5.7638, val_loss: 6.2047, lr: 0.000150, 0.25s
+2023-12-31 16:56:18,770 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 0, 'lr': 0.00015000000000000001, 'Loc acc(%)': 0.0, 'MLM loss': 9.188298225402832, 'Contrastive loss': 0.24876035749912262, 'align_loss': 34.04016876220703, 'uniform_loss': -85.68582153320312}
+2023-12-31 16:56:18,771 - INFO - Train: expid = 836396, Epoch = 10, avg_loss = 5.612483024597168, total_loc_acc = 0.0%.
+2023-12-31 16:56:18,772 - INFO - epoch complete!
+2023-12-31 16:56:18,772 - INFO - evaluating now!
+2023-12-31 16:56:18,836 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 0, 'lr': 0.00015000000000000001, 'Loc acc(%)': 0.0, 'MLM loss': 9.351804733276367, 'Contrastive loss': 1.3201700448989868, 'align_loss': 0.3082556128501892, 'uniform_loss': -15.808197021484375}
+2023-12-31 16:56:18,836 - INFO - Eval: expid = 836396, Epoch = 10, avg_loss = 6.139151096343994, total_loc_acc = 0.0%.
+2023-12-31 16:56:18,837 - INFO - Epoch [10/30] (11)  train_loss: 5.6125, val_loss: 6.1392, lr: 0.000141, 0.25s
+2023-12-31 16:56:19,018 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 0, 'lr': 0.00014067366430758004, 'Loc acc(%)': 0.0, 'MLM loss': 9.230380058288574, 'Contrastive loss': 0.07762131094932556, 'align_loss': 33.99980926513672, 'uniform_loss': -inf}
+2023-12-31 16:56:19,018 - INFO - Train: expid = 836396, Epoch = 11, avg_loss = 5.569276332855225, total_loc_acc = 0.0%.
+2023-12-31 16:56:19,019 - INFO - epoch complete!
+2023-12-31 16:56:19,019 - INFO - evaluating now!
+2023-12-31 16:56:19,083 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 0, 'lr': 0.00014067366430758004, 'Loc acc(%)': 0.0, 'MLM loss': 9.385045051574707, 'Contrastive loss': 1.3082469701766968, 'align_loss': 0.3128508925437927, 'uniform_loss': -16.0669002532959}
+2023-12-31 16:56:19,084 - INFO - Eval: expid = 836396, Epoch = 11, avg_loss = 6.15432596206665, total_loc_acc = 0.0%.
+2023-12-31 16:56:19,084 - INFO - Epoch [11/30] (12)  train_loss: 5.5693, val_loss: 6.1543, lr: 0.000131, 0.25s
+2023-12-31 16:56:19,264 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 0, 'lr': 0.00013090169943749476, 'Loc acc(%)': 0.0, 'MLM loss': 9.165304183959961, 'Contrastive loss': 0.12375564128160477, 'align_loss': 34.862159729003906, 'uniform_loss': -inf}
+2023-12-31 16:56:19,264 - INFO - Train: expid = 836396, Epoch = 12, avg_loss = 5.548685073852539, total_loc_acc = 0.0%.
+2023-12-31 16:56:19,265 - INFO - epoch complete!
+2023-12-31 16:56:19,266 - INFO - evaluating now!
+2023-12-31 16:56:19,329 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 0, 'lr': 0.00013090169943749476, 'Loc acc(%)': 0.0, 'MLM loss': 9.35470199584961, 'Contrastive loss': 1.2948304414749146, 'align_loss': 0.3184014558792114, 'uniform_loss': -16.298370361328125}
+2023-12-31 16:56:19,329 - INFO - Eval: expid = 836396, Epoch = 12, avg_loss = 6.130753517150879, total_loc_acc = 0.0%.
+2023-12-31 16:56:19,330 - INFO - Epoch [12/30] (13)  train_loss: 5.5487, val_loss: 6.1308, lr: 0.000121, 0.25s
+2023-12-31 16:56:19,511 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 0, 'lr': 0.00012079116908177593, 'Loc acc(%)': 0.0, 'MLM loss': 9.065805435180664, 'Contrastive loss': 0.17110414803028107, 'align_loss': 35.21612548828125, 'uniform_loss': -inf}
+2023-12-31 16:56:19,512 - INFO - Train: expid = 836396, Epoch = 13, avg_loss = 5.507925510406494, total_loc_acc = 0.0%.
+2023-12-31 16:56:19,513 - INFO - epoch complete!
+2023-12-31 16:56:19,513 - INFO - evaluating now!
+2023-12-31 16:56:19,576 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 0, 'lr': 0.00012079116908177593, 'Loc acc(%)': 0.0, 'MLM loss': 9.292675971984863, 'Contrastive loss': 1.277482271194458, 'align_loss': 0.32436403632164, 'uniform_loss': -16.5073184967041}
+2023-12-31 16:56:19,577 - INFO - Eval: expid = 836396, Epoch = 13, avg_loss = 6.086598873138428, total_loc_acc = 0.0%.
+2023-12-31 16:56:19,577 - INFO - Epoch [13/30] (14)  train_loss: 5.5079, val_loss: 6.0866, lr: 0.000110, 0.25s
+2023-12-31 16:56:19,759 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 0, 'lr': 0.00011045284632676536, 'Loc acc(%)': 0.0, 'MLM loss': 8.97905445098877, 'Contrastive loss': 0.030593672767281532, 'align_loss': 33.72060775756836, 'uniform_loss': -inf}
+2023-12-31 16:56:19,760 - INFO - Train: expid = 836396, Epoch = 14, avg_loss = 5.399670600891113, total_loc_acc = 0.0%.
+2023-12-31 16:56:19,761 - INFO - epoch complete!
+2023-12-31 16:56:19,761 - INFO - evaluating now!
+2023-12-31 16:56:19,825 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 0, 'lr': 0.00011045284632676536, 'Loc acc(%)': 0.0, 'MLM loss': 9.291168212890625, 'Contrastive loss': 1.262749195098877, 'align_loss': 0.32922813296318054, 'uniform_loss': -16.67243003845215}
+2023-12-31 16:56:19,825 - INFO - Eval: expid = 836396, Epoch = 14, avg_loss = 6.079801082611084, total_loc_acc = 0.0%.
+2023-12-31 16:56:19,826 - INFO - Epoch [14/30] (15)  train_loss: 5.3997, val_loss: 6.0798, lr: 0.000100, 0.25s
+2023-12-31 16:56:20,004 - INFO - {'mode': 'Train', 'epoch': 15, 'iter': 0, 'lr': 0.00010000000000000003, 'Loc acc(%)': 0.0, 'MLM loss': 9.124746322631836, 'Contrastive loss': 0.11495518684387207, 'align_loss': 34.79228591918945, 'uniform_loss': -inf}
+2023-12-31 16:56:20,005 - INFO - Train: expid = 836396, Epoch = 15, avg_loss = 5.520829677581787, total_loc_acc = 0.0%.
+2023-12-31 16:56:20,006 - INFO - epoch complete!
+2023-12-31 16:56:20,006 - INFO - evaluating now!
+2023-12-31 16:56:20,071 - INFO - {'mode': 'Train', 'epoch': 15, 'iter': 0, 'lr': 0.00010000000000000003, 'Loc acc(%)': 0.0, 'MLM loss': 9.190401077270508, 'Contrastive loss': 1.245705485343933, 'align_loss': 0.3345378637313843, 'uniform_loss': -16.825328826904297}
+2023-12-31 16:56:20,072 - INFO - Eval: expid = 836396, Epoch = 15, avg_loss = 6.0125226974487305, total_loc_acc = 0.0%.
+2023-12-31 16:56:20,072 - INFO - Epoch [15/30] (16)  train_loss: 5.5208, val_loss: 6.0125, lr: 0.000090, 0.25s
+2023-12-31 16:56:20,322 - INFO - Saved model at 15
+2023-12-31 16:56:20,322 - INFO - Val loss decrease from 6.0283 to 6.0125, saving to ./libcity/cache/836396/model_cache/BERTContrastiveLM_porto_epoch15.tar
+2023-12-31 16:56:20,501 - INFO - {'mode': 'Train', 'epoch': 16, 'iter': 0, 'lr': 8.954715367323468e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.037925720214844, 'Contrastive loss': 0.019693683832883835, 'align_loss': 35.70634841918945, 'uniform_loss': -inf}
+2023-12-31 16:56:20,502 - INFO - Train: expid = 836396, Epoch = 16, avg_loss = 5.430633068084717, total_loc_acc = 0.0%.
+2023-12-31 16:56:20,503 - INFO - epoch complete!
+2023-12-31 16:56:20,503 - INFO - evaluating now!
+2023-12-31 16:56:20,567 - INFO - {'mode': 'Train', 'epoch': 16, 'iter': 0, 'lr': 8.954715367323468e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.323681831359863, 'Contrastive loss': 1.2328852415084839, 'align_loss': 0.33849817514419556, 'uniform_loss': -16.92849349975586}
+2023-12-31 16:56:20,567 - INFO - Eval: expid = 836396, Epoch = 16, avg_loss = 6.087363243103027, total_loc_acc = 0.0%.
+2023-12-31 16:56:20,568 - INFO - Epoch [16/30] (17)  train_loss: 5.4306, val_loss: 6.0874, lr: 0.000079, 0.25s
+2023-12-31 16:56:20,747 - INFO - {'mode': 'Train', 'epoch': 17, 'iter': 0, 'lr': 7.920883091822407e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.045920372009277, 'Contrastive loss': 0.018295802175998688, 'align_loss': 31.30267333984375, 'uniform_loss': -inf}
+2023-12-31 16:56:20,748 - INFO - Train: expid = 836396, Epoch = 17, avg_loss = 5.434870719909668, total_loc_acc = 0.0%.
+2023-12-31 16:56:20,749 - INFO - epoch complete!
+2023-12-31 16:56:20,749 - INFO - evaluating now!
+2023-12-31 16:56:20,814 - INFO - {'mode': 'Train', 'epoch': 17, 'iter': 0, 'lr': 7.920883091822407e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.406454086303711, 'Contrastive loss': 1.2232725620269775, 'align_loss': 0.3413344919681549, 'uniform_loss': -17.001874923706055}
+2023-12-31 16:56:20,814 - INFO - Eval: expid = 836396, Epoch = 17, avg_loss = 6.133181571960449, total_loc_acc = 0.0%.
+2023-12-31 16:56:20,815 - INFO - Epoch [17/30] (18)  train_loss: 5.4349, val_loss: 6.1332, lr: 0.000069, 0.25s
+2023-12-31 16:56:20,999 - INFO - {'mode': 'Train', 'epoch': 18, 'iter': 0, 'lr': 6.909830056250527e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.066658020019531, 'Contrastive loss': 0.10925225913524628, 'align_loss': 37.01882553100586, 'uniform_loss': -inf}
+2023-12-31 16:56:21,000 - INFO - Train: expid = 836396, Epoch = 18, avg_loss = 5.4836955070495605, total_loc_acc = 0.0%.
+2023-12-31 16:56:21,001 - INFO - epoch complete!
+2023-12-31 16:56:21,001 - INFO - evaluating now!
+2023-12-31 16:56:21,063 - INFO - {'mode': 'Train', 'epoch': 18, 'iter': 0, 'lr': 6.909830056250527e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.345254898071289, 'Contrastive loss': 1.215791940689087, 'align_loss': 0.34404468536376953, 'uniform_loss': -17.061403274536133}
+2023-12-31 16:56:21,064 - INFO - Eval: expid = 836396, Epoch = 18, avg_loss = 6.093469619750977, total_loc_acc = 0.0%.
+2023-12-31 16:56:21,064 - INFO - Epoch [18/30] (19)  train_loss: 5.4837, val_loss: 6.0935, lr: 0.000059, 0.25s
+2023-12-31 16:56:21,248 - INFO - {'mode': 'Train', 'epoch': 19, 'iter': 0, 'lr': 5.932633569241999e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.014422416687012, 'Contrastive loss': 0.06431947648525238, 'align_loss': 34.40354919433594, 'uniform_loss': -inf}
+2023-12-31 16:56:21,249 - INFO - Train: expid = 836396, Epoch = 19, avg_loss = 5.434381484985352, total_loc_acc = 0.0%.
+2023-12-31 16:56:21,250 - INFO - epoch complete!
+2023-12-31 16:56:21,250 - INFO - evaluating now!
+2023-12-31 16:56:21,314 - INFO - {'mode': 'Train', 'epoch': 19, 'iter': 0, 'lr': 5.932633569241999e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.284347534179688, 'Contrastive loss': 1.2101080417633057, 'align_loss': 0.3458784520626068, 'uniform_loss': -17.10513687133789}
+2023-12-31 16:56:21,314 - INFO - Eval: expid = 836396, Epoch = 19, avg_loss = 6.054651737213135, total_loc_acc = 0.0%.
+2023-12-31 16:56:21,314 - INFO - Epoch [19/30] (20)  train_loss: 5.4344, val_loss: 6.0547, lr: 0.000050, 0.25s
+2023-12-31 16:56:21,494 - INFO - {'mode': 'Train', 'epoch': 20, 'iter': 0, 'lr': 5.000000000000002e-05, 'Loc acc(%)': 0.0, 'MLM loss': 8.904199600219727, 'Contrastive loss': 0.08495420217514038, 'align_loss': 29.91139793395996, 'uniform_loss': -inf}
+2023-12-31 16:56:21,495 - INFO - Train: expid = 836396, Epoch = 20, avg_loss = 5.376501560211182, total_loc_acc = 0.0%.
+2023-12-31 16:56:21,496 - INFO - epoch complete!
+2023-12-31 16:56:21,496 - INFO - evaluating now!
+2023-12-31 16:56:21,560 - INFO - {'mode': 'Train', 'epoch': 20, 'iter': 0, 'lr': 5.000000000000002e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.309122085571289, 'Contrastive loss': 1.2096056938171387, 'align_loss': 0.3466050326824188, 'uniform_loss': -17.112215042114258}
+2023-12-31 16:56:21,561 - INFO - Eval: expid = 836396, Epoch = 20, avg_loss = 6.0693159103393555, total_loc_acc = 0.0%.
+2023-12-31 16:56:21,561 - INFO - Epoch [20/30] (21)  train_loss: 5.3765, val_loss: 6.0693, lr: 0.000041, 0.25s
+2023-12-31 16:56:21,739 - INFO - {'mode': 'Train', 'epoch': 21, 'iter': 0, 'lr': 4.12214747707527e-05, 'Loc acc(%)': 0.0, 'MLM loss': 8.949110984802246, 'Contrastive loss': 0.009170500561594963, 'align_loss': 31.61130142211914, 'uniform_loss': -inf}
+2023-12-31 16:56:21,740 - INFO - Train: expid = 836396, Epoch = 21, avg_loss = 5.373135089874268, total_loc_acc = 0.0%.
+2023-12-31 16:56:21,741 - INFO - epoch complete!
+2023-12-31 16:56:21,741 - INFO - evaluating now!
+2023-12-31 16:56:21,805 - INFO - {'mode': 'Train', 'epoch': 21, 'iter': 0, 'lr': 4.12214747707527e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.392826080322266, 'Contrastive loss': 1.2100175619125366, 'align_loss': 0.3469025492668152, 'uniform_loss': -17.10280418395996}
+2023-12-31 16:56:21,806 - INFO - Eval: expid = 836396, Epoch = 21, avg_loss = 6.1197028160095215, total_loc_acc = 0.0%.
+2023-12-31 16:56:21,806 - INFO - Epoch [21/30] (22)  train_loss: 5.3731, val_loss: 6.1197, lr: 0.000033, 0.24s
+2023-12-31 16:56:21,988 - INFO - {'mode': 'Train', 'epoch': 22, 'iter': 0, 'lr': 3.308693936411421e-05, 'Loc acc(%)': 1.4925373134328357, 'MLM loss': 8.881000518798828, 'Contrastive loss': 0.03327460214495659, 'align_loss': 35.25627517700195, 'uniform_loss': -inf}
+2023-12-31 16:56:21,989 - INFO - Train: expid = 836396, Epoch = 22, avg_loss = 5.341910362243652, total_loc_acc = 1.4925373134328357%.
+2023-12-31 16:56:21,990 - INFO - epoch complete!
+2023-12-31 16:56:21,990 - INFO - evaluating now!
+2023-12-31 16:56:22,053 - INFO - {'mode': 'Train', 'epoch': 22, 'iter': 0, 'lr': 3.308693936411421e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.26913070678711, 'Contrastive loss': 1.211044430732727, 'align_loss': 0.34688401222229004, 'uniform_loss': -17.086891174316406}
+2023-12-31 16:56:22,054 - INFO - Eval: expid = 836396, Epoch = 22, avg_loss = 6.045896530151367, total_loc_acc = 0.0%.
+2023-12-31 16:56:22,054 - INFO - Epoch [22/30] (23)  train_loss: 5.3419, val_loss: 6.0459, lr: 0.000026, 0.25s
+2023-12-31 16:56:22,235 - INFO - {'mode': 'Train', 'epoch': 23, 'iter': 0, 'lr': 2.5685517452260587e-05, 'Loc acc(%)': 4.545454545454546, 'MLM loss': 8.98245620727539, 'Contrastive loss': 0.003297950839623809, 'align_loss': 28.339487075805664, 'uniform_loss': -inf}
+2023-12-31 16:56:22,236 - INFO - Train: expid = 836396, Epoch = 23, avg_loss = 5.390793323516846, total_loc_acc = 4.545454545454546%.
+2023-12-31 16:56:22,237 - INFO - epoch complete!
+2023-12-31 16:56:22,237 - INFO - evaluating now!
+2023-12-31 16:56:22,301 - INFO - {'mode': 'Train', 'epoch': 23, 'iter': 0, 'lr': 2.5685517452260587e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.422130584716797, 'Contrastive loss': 1.2124801874160767, 'align_loss': 0.34697288274765015, 'uniform_loss': -17.06841278076172}
+2023-12-31 16:56:22,301 - INFO - Eval: expid = 836396, Epoch = 23, avg_loss = 6.138270378112793, total_loc_acc = 0.0%.
+2023-12-31 16:56:22,302 - INFO - Epoch [23/30] (24)  train_loss: 5.3908, val_loss: 6.1383, lr: 0.000019, 0.25s
+2023-12-31 16:56:22,482 - INFO - {'mode': 'Train', 'epoch': 24, 'iter': 0, 'lr': 1.9098300562505266e-05, 'Loc acc(%)': 0.0, 'MLM loss': 8.929420471191406, 'Contrastive loss': 0.033828213810920715, 'align_loss': 34.98066711425781, 'uniform_loss': -inf}
+2023-12-31 16:56:22,483 - INFO - Train: expid = 836396, Epoch = 24, avg_loss = 5.3711838722229, total_loc_acc = 0.0%.
+2023-12-31 16:56:22,484 - INFO - epoch complete!
+2023-12-31 16:56:22,484 - INFO - evaluating now!
+2023-12-31 16:56:22,548 - INFO - {'mode': 'Train', 'epoch': 24, 'iter': 0, 'lr': 1.9098300562505266e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.248830795288086, 'Contrastive loss': 1.2134491205215454, 'align_loss': 0.3467787504196167, 'uniform_loss': -17.05276107788086}
+2023-12-31 16:56:22,549 - INFO - Eval: expid = 836396, Epoch = 24, avg_loss = 6.0346784591674805, total_loc_acc = 0.0%.
+2023-12-31 16:56:22,549 - INFO - Epoch [24/30] (25)  train_loss: 5.3712, val_loss: 6.0347, lr: 0.000013, 0.25s
+2023-12-31 16:56:22,730 - INFO - {'mode': 'Train', 'epoch': 25, 'iter': 0, 'lr': 1.339745962155613e-05, 'Loc acc(%)': 0.0, 'MLM loss': 8.822830200195312, 'Contrastive loss': 0.009906808845698833, 'align_loss': 32.19544982910156, 'uniform_loss': -inf}
+2023-12-31 16:56:22,730 - INFO - Train: expid = 836396, Epoch = 25, avg_loss = 5.297660827636719, total_loc_acc = 0.0%.
+2023-12-31 16:56:22,731 - INFO - epoch complete!
+2023-12-31 16:56:22,732 - INFO - evaluating now!
+2023-12-31 16:56:22,795 - INFO - {'mode': 'Train', 'epoch': 25, 'iter': 0, 'lr': 1.339745962155613e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.411184310913086, 'Contrastive loss': 1.2141773700714111, 'align_loss': 0.3468151390552521, 'uniform_loss': -17.043537139892578}
+2023-12-31 16:56:22,796 - INFO - Eval: expid = 836396, Epoch = 25, avg_loss = 6.132381916046143, total_loc_acc = 0.0%.
+2023-12-31 16:56:22,796 - INFO - Epoch [25/30] (26)  train_loss: 5.2977, val_loss: 6.1324, lr: 0.000009, 0.25s
+2023-12-31 16:56:22,796 - WARNING - Early stopping at epoch: 25
+2023-12-31 16:56:22,796 - INFO - Trained totally 26 epochs, average train time is 0.214s, average eval time is 0.066s
+2023-12-31 16:56:22,918 - INFO - Loaded model at 15
+2023-12-31 16:56:22,995 - INFO - Save png at ./libcity/cache/836396/836396_loss.png
+2023-12-31 16:56:23,051 - INFO - Save png at ./libcity/cache/836396/836396_acc.png
+2023-12-31 16:56:23,111 - INFO - Save png at ./libcity/cache/836396/836396_lr.png
+2023-12-31 16:56:23,297 - INFO - Saved model at ./libcity/cache/836396/model_cache/836396_BERTContrastiveLM_porto.pt
+2023-12-31 16:56:23,298 - INFO - Start evaluating ...
+2023-12-31 16:56:23,363 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 0, 'lr': 8.954715367323468e-05, 'Loc acc(%)': 0.0, 'MLM loss': 9.425271987915039, 'Contrastive loss': 0.5862891674041748, 'align_loss': 0.51273512840271, 'uniform_loss': -17.571142196655273}
+2023-12-31 16:56:23,363 - INFO - Test: expid = 836396, Epoch = 0, avg_loss = 5.889678955078125, total_loc_acc = 0.0%.
+2023-12-31 16:56:23,364 - INFO - Evaluate result is {
+ "Precision@1": 0.0,
+ "Recall@1": 0.0,
+ "F1@1": 0.0,
+ "MRR@1": 0.0,
+ "MAP@1": 0.0,
+ "NDCG@1": 0.0,
+ "Precision@5": 0.0,
+ "Recall@5": 0.0,
+ "F1@5": 0.0,
+ "MRR@5": 0.0,
+ "MAP@5": 0.0,
+ "NDCG@5": 0.0,
+ "Precision@10": 0.0,
+ "Recall@10": 0.0,
+ "F1@10": 0.0,
+ "MRR@10": 0.0,
+ "MAP@10": 0.0,
+ "NDCG@10": 0.0
+}
+2023-12-31 16:56:23,365 - INFO - Evaluate result is saved at ./libcity/cache/836396/evaluate_cache\836396_2023_12_31_16_56_23_BERTContrastiveLM_porto.json
+2023-12-31 16:56:23,368 - INFO - Evaluate result is saved at ./libcity/cache/836396/evaluate_cache\836396_2023_12_31_16_56_23_BERTContrastiveLM_porto.csv
+2023-12-31 16:56:23,373 - INFO - 
+    Precision  Recall   F1  MRR  NDCG
+1         0.0     0.0  0.0  0.0   0.0
+5         0.0     0.0  0.0  0.0   0.0
+10        0.0     0.0  0.0  0.0   0.0
+2023-12-31 16:56:23,373 - INFO - Test time 0.07562804222106934s.

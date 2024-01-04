@@ -1,0 +1,652 @@
+2023-12-31 08:11:28,627 - INFO - Log directory: ./libcity/log
+2023-12-31 08:11:28,627 - INFO - Begin pretrain-pipeline, task=trajectory_embedding, model_name=LinearETA, dataset_name=bj, exp_id=312209
+2023-12-31 08:11:28,627 - INFO - {'task': 'trajectory_embedding', 'model': 'LinearETA', 'dataset': 'bj', 'saved_model': True, 'train': True, 'gpu': True, 'gpu_id': 0, 'distribution': 'geometric', 'avg_mask_len': 2, 'contra_ratio': 0.4, 'mlm_ratio': 0.6, 'split': True, 'config': 'bj', 'n_layers': 6, 'd_model': 256, 'attn_heads': 8, 'max_epoch': 15, 'batch_size': 8, 'grad_accmu_steps': 1, 'learning_rate': 0.0002, 'roadnetwork': 'bj_roadmap_edge_bj_True_1_merge', 'geo_file': 'bj_roadmap_edge_bj_True_1_merge_withdegree', 'rel_file': 'bj_roadmap_edge_bj_True_1_merge_withdegree', 'merge': True, 'min_freq': 1, 'seq_len': 128, 'test_every': 50, 'temperature': 0.05, 'contra_loss_type': 'simclr', 'classify_label': 'vflag', 'type_ln': 'post', 'add_cls': True, 'add_time_in_day': True, 'add_day_in_week': True, 'add_pe': True, 'add_temporal_bias': True, 'temporal_bias_dim': 64, 'use_mins_interval': False, 'add_gat': True, 'gat_heads_per_layer': [8, 16, 1], 'gat_features_per_layer': [16, 16, 256], 'gat_dropout': 0.1, 'gat_K': 1, 'gat_avg_last': True, 'load_trans_prob': True, 'append_degree2gcn': True, 'normal_feature': False, 'pooling': 'cls', 'dataset_class': 'ETADataset', 'executor': 'ETAExecutor', 'evaluator': 'RegressionEvaluator', 'num_workers': 0, 'vocab_path': None, 'mlp_ratio': 4, 'pretrain_road_emb': None, 'future_mask': False, 'load_node2vec': False, 'dropout': 0.1, 'drop_path': 0.3, 'attn_drop': 0.1, 'seed': 0, 'learner': 'adamw', 'lr_eta_min': 0, 'lr_warmup_epoch': 4, 'lr_warmup_init': 1e-06, 'lr_decay': True, 'lr_scheduler': 'cosinelr', 'lr_decay_ratio': 0.1, 't_in_epochs': True, 'clip_grad_norm': True, 'max_grad_norm': 5, 'use_early_stop': True, 'patience': 10, 'log_batch': 500, 'log_every': 1, 'l2_reg': None, 'bidir_adj_mx': False, 'pretrain_path': None, 'freeze': False, 'metrics': ['MAE', 'RMSE', 'MAPE', 'R2', 'EVAR'], 'save_modes': ['csv', 'json'], 'device': device(type='cuda', index=0), 'exp_id': 312209}
+2023-12-31 08:11:29,106 - INFO - Loading Vocab from raw_data/vocab_bj_True_1_merge.pkl
+2023-12-31 08:11:29,122 - INFO - vocab_path=raw_data/vocab_bj_True_1_merge.pkl, usr_num=202, vocab_size=31190
+2023-12-31 08:11:29,169 - INFO - Loaded file bj_roadmap_edge_bj_True_1_merge_withdegree.geo, num_nodes=31186
+2023-12-31 08:11:30,898 - INFO - Loaded file bj_roadmap_edge_bj_True_1_merge_withdegree.rel, shape=(31186, 31186), edges=68339.0
+2023-12-31 08:11:30,898 - INFO - node_features: (31186, 43)
+2023-12-31 08:11:31,830 - INFO - node_features_encoded: torch.Size([31190, 43])
+2023-12-31 08:11:31,996 - INFO - edge_index: torch.Size([2, 99518])
+2023-12-31 08:11:31,996 - INFO - Trajectory loc-transfer prob shape=torch.Size([99518, 1])
+2023-12-31 08:11:32,012 - INFO - Loading Dataset!
+2023-12-31 08:11:32,543 - INFO - Load dataset from raw_data/bj/cache_bj_train_True_True_1.pkl
+2023-12-31 08:11:32,715 - INFO - Load dataset from raw_data/bj/cache_bj_eval_True_True_1.pkl
+2023-12-31 08:11:32,887 - INFO - Load dataset from raw_data/bj/cache_bj_test_True_True_1.pkl
+2023-12-31 08:11:32,887 - INFO - Size of dataset: 34258/11420/11420
+2023-12-31 08:11:32,887 - INFO - Creating Dataloader!
+2023-12-31 08:11:32,887 - INFO - Building Downstream LinearETA model
+2023-12-31 08:11:32,887 - INFO - Building BERTDownstream model
+2023-12-31 08:11:33,475 - INFO - LinearETA(
+  (model): BERTDownstream(
+    (bert): BERT(
+      (embedding): BERTEmbedding(
+        (token_embedding): GAT(
+          (gat_net): Sequential(
+            (0): GATLayerImp3(
+              (linear_proj): Linear(in_features=43, out_features=128, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=128, bias=False)
+              (skip_proj): Linear(in_features=43, out_features=128, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (activation): ELU(alpha=1.0)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (1): GATLayerImp3(
+              (linear_proj): Linear(in_features=128, out_features=256, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=256, bias=False)
+              (skip_proj): Linear(in_features=128, out_features=256, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (activation): ELU(alpha=1.0)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (2): GATLayerImp3(
+              (linear_proj): Linear(in_features=256, out_features=256, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=256, bias=False)
+              (skip_proj): Linear(in_features=256, out_features=256, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (position_embedding): PositionalEmbedding()
+        (daytime_embedding): Embedding(1441, 256, padding_idx=0)
+        (weekday_embedding): Embedding(8, 256, padding_idx=0)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (transformer_blocks): ModuleList(
+        (0): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): Identity()
+        )
+        (1): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (2): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (3): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (4): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (5): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+      )
+    )
+  )
+  (linear): Linear(in_features=256, out_features=1, bias=True)
+)
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_fn_target	torch.Size([1, 8, 16])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_fn_source	torch.Size([1, 8, 16])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_trans_prob	torch.Size([1, 8, 16])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.0.bias	torch.Size([128])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.0.linear_proj.weight	torch.Size([128, 43])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.0.linear_proj_tran_prob.weight	torch.Size([128, 1])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.0.skip_proj.weight	torch.Size([128, 43])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_fn_target	torch.Size([1, 16, 16])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_fn_source	torch.Size([1, 16, 16])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_trans_prob	torch.Size([1, 16, 16])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.1.linear_proj.weight	torch.Size([256, 128])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.1.linear_proj_tran_prob.weight	torch.Size([256, 1])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.1.skip_proj.weight	torch.Size([256, 128])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_fn_target	torch.Size([1, 1, 256])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_fn_source	torch.Size([1, 1, 256])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_trans_prob	torch.Size([1, 1, 256])	cuda:0	True
+2023-12-31 08:11:33,475 - INFO - model.bert.embedding.token_embedding.gat_net.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.embedding.token_embedding.gat_net.2.linear_proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.embedding.token_embedding.gat_net.2.linear_proj_tran_prob.weight	torch.Size([256, 1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.embedding.token_embedding.gat_net.2.skip_proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.embedding.daytime_embedding.weight	torch.Size([1441, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.embedding.weekday_embedding.weight	torch.Size([8, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.0.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.1.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.2.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.3.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.4.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.proj.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.norm1.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.norm1.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.norm2.weight	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - model.bert.transformer_blocks.5.norm2.bias	torch.Size([256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - linear.weight	torch.Size([1, 256])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - linear.bias	torch.Size([1])	cuda:0	True
+2023-12-31 08:11:33,491 - INFO - Total parameter numbers: 5321735
+2023-12-31 08:11:33,491 - INFO - You select `adamw` optimizer.
+2023-12-31 08:11:33,506 - INFO - You select `cosinelr` lr_scheduler.
+2023-12-31 08:11:33,506 - INFO - Start training ...
+2023-12-31 08:11:33,506 - INFO - Num_batches: train=4283, eval=1428
+2023-12-31 08:11:34,157 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 0, 'lr': 1e-06, 'loss': 213.11619567871094}
+2023-12-31 08:12:26,550 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 500, 'lr': 1e-06, 'loss': 370.221435546875}
+2023-12-31 08:13:19,044 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 1000, 'lr': 1e-06, 'loss': 1359.6549072265625}
+2023-12-31 08:14:11,784 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 1500, 'lr': 1e-06, 'loss': 151.04055786132812}
+2023-12-31 08:15:04,662 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 2000, 'lr': 1e-06, 'loss': 34.69877624511719}
+2023-12-31 08:15:58,231 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 2500, 'lr': 1e-06, 'loss': 26.71499252319336}
+2023-12-31 08:16:51,861 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 3000, 'lr': 1e-06, 'loss': 244.54782104492188}
+2023-12-31 08:17:45,888 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 3500, 'lr': 1e-06, 'loss': 209.45660400390625}
+2023-12-31 08:18:40,070 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 4000, 'lr': 1e-06, 'loss': 119.43948364257812}
+2023-12-31 08:19:10,626 - INFO - Train: expid = 312209, Epoch = 0, avg_loss = 229.43677173044156.
+2023-12-31 08:19:10,636 - INFO - epoch complete!
+2023-12-31 08:19:10,636 - INFO - evaluating now!
+2023-12-31 08:19:10,666 - INFO - {'mode': 'Eval', 'epoch': 0, 'iter': 0, 'lr': 1e-06, 'loss': 216.72213745117188}
+2023-12-31 08:19:26,446 - INFO - {'mode': 'Eval', 'epoch': 0, 'iter': 500, 'lr': 1e-06, 'loss': 86.38377380371094}
+2023-12-31 08:19:42,342 - INFO - {'mode': 'Eval', 'epoch': 0, 'iter': 1000, 'lr': 1e-06, 'loss': 210.14190673828125}
+2023-12-31 08:19:55,921 - INFO - Eval: expid = 312209, Epoch = 0, avg_loss = 291.69870747952035.
+2023-12-31 08:19:55,921 - INFO - Epoch [0/15] (4283)  train_loss: 229.4368, val_loss: 291.6987, lr: 0.000051, 502.41s
+2023-12-31 08:19:56,101 - INFO - Saved model at 0
+2023-12-31 08:19:56,101 - INFO - Val loss decrease from inf to 291.6987, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch0.tar
+2023-12-31 08:19:56,213 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 0, 'lr': 5.075e-05, 'loss': 176.2446746826172}
+2023-12-31 08:20:50,545 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 500, 'lr': 5.075e-05, 'loss': 20.14098358154297}
+2023-12-31 08:21:45,212 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 1000, 'lr': 5.075e-05, 'loss': 23.302013397216797}
+2023-12-31 08:22:39,662 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 1500, 'lr': 5.075e-05, 'loss': 463.6072692871094}
+2023-12-31 08:23:34,276 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 2000, 'lr': 5.075e-05, 'loss': 30.55215072631836}
+2023-12-31 08:24:28,860 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 2500, 'lr': 5.075e-05, 'loss': 49.82719039916992}
+2023-12-31 08:25:23,490 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 3000, 'lr': 5.075e-05, 'loss': 28.10218048095703}
+2023-12-31 08:26:18,072 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 3500, 'lr': 5.075e-05, 'loss': 121.37602233886719}
+2023-12-31 08:27:12,722 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 4000, 'lr': 5.075e-05, 'loss': 13.587030410766602}
+2023-12-31 08:27:43,412 - INFO - Train: expid = 312209, Epoch = 1, avg_loss = 106.7207024114563.
+2023-12-31 08:27:43,412 - INFO - epoch complete!
+2023-12-31 08:27:43,412 - INFO - evaluating now!
+2023-12-31 08:27:43,452 - INFO - {'mode': 'Eval', 'epoch': 1, 'iter': 0, 'lr': 5.075e-05, 'loss': 24.13901138305664}
+2023-12-31 08:27:59,370 - INFO - {'mode': 'Eval', 'epoch': 1, 'iter': 500, 'lr': 5.075e-05, 'loss': 7.09799861907959}
+2023-12-31 08:28:15,340 - INFO - {'mode': 'Eval', 'epoch': 1, 'iter': 1000, 'lr': 5.075e-05, 'loss': 47.84696960449219}
+2023-12-31 08:28:28,970 - INFO - Eval: expid = 312209, Epoch = 1, avg_loss = 172.30203857956334.
+2023-12-31 08:28:28,970 - INFO - Epoch [1/15] (8566)  train_loss: 106.7207, val_loss: 172.3020, lr: 0.000101, 512.87s
+2023-12-31 08:28:29,140 - INFO - Saved model at 1
+2023-12-31 08:28:29,140 - INFO - Val loss decrease from 291.6987 to 172.3020, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch1.tar
+2023-12-31 08:28:29,260 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 0, 'lr': 0.0001005, 'loss': 25.765544891357422}
+2023-12-31 08:29:24,077 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 500, 'lr': 0.0001005, 'loss': 36.136314392089844}
+2023-12-31 08:30:18,860 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 1000, 'lr': 0.0001005, 'loss': 62.19767379760742}
+2023-12-31 08:31:13,634 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 1500, 'lr': 0.0001005, 'loss': 43.48063278198242}
+2023-12-31 08:32:08,504 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 2000, 'lr': 0.0001005, 'loss': 66.13699340820312}
+2023-12-31 08:33:03,372 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 2500, 'lr': 0.0001005, 'loss': 13.616617202758789}
+2023-12-31 08:33:58,182 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 3000, 'lr': 0.0001005, 'loss': 13.700098037719727}
+2023-12-31 08:34:52,942 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 3500, 'lr': 0.0001005, 'loss': 30.967811584472656}
+2023-12-31 08:35:47,739 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 4000, 'lr': 0.0001005, 'loss': 38.59405517578125}
+2023-12-31 08:36:18,659 - INFO - Train: expid = 312209, Epoch = 2, avg_loss = 85.77726719910991.
+2023-12-31 08:36:18,659 - INFO - epoch complete!
+2023-12-31 08:36:18,659 - INFO - evaluating now!
+2023-12-31 08:36:18,689 - INFO - {'mode': 'Eval', 'epoch': 2, 'iter': 0, 'lr': 0.0001005, 'loss': 29.670486450195312}
+2023-12-31 08:36:34,699 - INFO - {'mode': 'Eval', 'epoch': 2, 'iter': 500, 'lr': 0.0001005, 'loss': 14.858966827392578}
+2023-12-31 08:36:50,799 - INFO - {'mode': 'Eval', 'epoch': 2, 'iter': 1000, 'lr': 0.0001005, 'loss': 44.648075103759766}
+2023-12-31 08:37:04,565 - INFO - Eval: expid = 312209, Epoch = 2, avg_loss = 165.0691721077767.
+2023-12-31 08:37:04,565 - INFO - Epoch [2/15] (12849)  train_loss: 85.7773, val_loss: 165.0692, lr: 0.000150, 515.42s
+2023-12-31 08:37:04,745 - INFO - Saved model at 2
+2023-12-31 08:37:04,745 - INFO - Val loss decrease from 172.3020 to 165.0692, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch2.tar
+2023-12-31 08:37:04,855 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 0, 'lr': 0.00015025000000000002, 'loss': 66.95234680175781}
+2023-12-31 08:37:59,715 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 500, 'lr': 0.00015025000000000002, 'loss': 20.007600784301758}
+2023-12-31 08:38:54,504 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 1000, 'lr': 0.00015025000000000002, 'loss': 15.99122142791748}
+2023-12-31 08:39:49,265 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 1500, 'lr': 0.00015025000000000002, 'loss': 104.02427673339844}
+2023-12-31 08:40:44,187 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 2000, 'lr': 0.00015025000000000002, 'loss': 8.762207984924316}
+2023-12-31 08:41:38,953 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 2500, 'lr': 0.00015025000000000002, 'loss': 26.823833465576172}
+2023-12-31 08:42:33,807 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 3000, 'lr': 0.00015025000000000002, 'loss': 57.263973236083984}
+2023-12-31 08:43:28,711 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 3500, 'lr': 0.00015025000000000002, 'loss': 17.005149841308594}
+2023-12-31 08:44:23,691 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 4000, 'lr': 0.00015025000000000002, 'loss': 20.357589721679688}
+2023-12-31 08:44:54,671 - INFO - Train: expid = 312209, Epoch = 3, avg_loss = 83.88448163455168.
+2023-12-31 08:44:54,671 - INFO - epoch complete!
+2023-12-31 08:44:54,681 - INFO - evaluating now!
+2023-12-31 08:44:54,711 - INFO - {'mode': 'Eval', 'epoch': 3, 'iter': 0, 'lr': 0.00015025000000000002, 'loss': 37.25517272949219}
+2023-12-31 08:45:10,788 - INFO - {'mode': 'Eval', 'epoch': 3, 'iter': 500, 'lr': 0.00015025000000000002, 'loss': 68.59156036376953}
+2023-12-31 08:45:26,798 - INFO - {'mode': 'Eval', 'epoch': 3, 'iter': 1000, 'lr': 0.00015025000000000002, 'loss': 29.07207489013672}
+2023-12-31 08:45:40,528 - INFO - Eval: expid = 312209, Epoch = 3, avg_loss = 162.320392973494.
+2023-12-31 08:45:40,538 - INFO - Epoch [3/15] (17132)  train_loss: 83.8845, val_loss: 162.3204, lr: 0.000167, 515.79s
+2023-12-31 08:45:40,718 - INFO - Saved model at 3
+2023-12-31 08:45:40,718 - INFO - Val loss decrease from 165.0692 to 162.3204, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch3.tar
+2023-12-31 08:45:40,828 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 0, 'lr': 0.00016691306063588583, 'loss': 225.1907501220703}
+2023-12-31 08:46:35,785 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 500, 'lr': 0.00016691306063588583, 'loss': 18.94055938720703}
+2023-12-31 08:47:30,652 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 1000, 'lr': 0.00016691306063588583, 'loss': 12.19294261932373}
+2023-12-31 08:48:25,542 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 1500, 'lr': 0.00016691306063588583, 'loss': 29.939661026000977}
+2023-12-31 08:49:20,448 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 2000, 'lr': 0.00016691306063588583, 'loss': 49.60032653808594}
+2023-12-31 08:50:15,246 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 2500, 'lr': 0.00016691306063588583, 'loss': 75.82073974609375}
+2023-12-31 08:51:10,255 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 3000, 'lr': 0.00016691306063588583, 'loss': 24.32923126220703}
+2023-12-31 08:52:05,415 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 3500, 'lr': 0.00016691306063588583, 'loss': 79.56271362304688}
+2023-12-31 08:53:00,395 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 4000, 'lr': 0.00016691306063588583, 'loss': 27.132070541381836}
+2023-12-31 08:53:31,332 - INFO - Train: expid = 312209, Epoch = 4, avg_loss = 79.36490876489947.
+2023-12-31 08:53:31,332 - INFO - epoch complete!
+2023-12-31 08:53:31,332 - INFO - evaluating now!
+2023-12-31 08:53:31,372 - INFO - {'mode': 'Eval', 'epoch': 4, 'iter': 0, 'lr': 0.00016691306063588583, 'loss': 29.27053451538086}
+2023-12-31 08:53:47,392 - INFO - {'mode': 'Eval', 'epoch': 4, 'iter': 500, 'lr': 0.00016691306063588583, 'loss': 7.036371231079102}
+2023-12-31 08:54:03,402 - INFO - {'mode': 'Eval', 'epoch': 4, 'iter': 1000, 'lr': 0.00016691306063588583, 'loss': 13.263632774353027}
+2023-12-31 08:54:17,132 - INFO - Eval: expid = 312209, Epoch = 4, avg_loss = 162.42921942695844.
+2023-12-31 08:54:17,132 - INFO - Epoch [4/15] (21415)  train_loss: 79.3649, val_loss: 162.4292, lr: 0.000150, 516.41s
+2023-12-31 08:54:17,252 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 0, 'lr': 0.00015000000000000001, 'loss': 35.29021072387695}
+2023-12-31 08:55:12,138 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 500, 'lr': 0.00015000000000000001, 'loss': 61.232547760009766}
+2023-12-31 08:56:06,918 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 1000, 'lr': 0.00015000000000000001, 'loss': 30.804908752441406}
+2023-12-31 08:57:01,698 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 1500, 'lr': 0.00015000000000000001, 'loss': 51.47550964355469}
+2023-12-31 08:57:56,625 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 2000, 'lr': 0.00015000000000000001, 'loss': 26.461620330810547}
+2023-12-31 08:58:51,455 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 2500, 'lr': 0.00015000000000000001, 'loss': 40.89152908325195}
+2023-12-31 08:59:46,312 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 3000, 'lr': 0.00015000000000000001, 'loss': 70.8143539428711}
+2023-12-31 09:00:41,262 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 3500, 'lr': 0.00015000000000000001, 'loss': 31.500831604003906}
+2023-12-31 09:01:36,109 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 4000, 'lr': 0.00015000000000000001, 'loss': 9.359243392944336}
+2023-12-31 09:02:07,009 - INFO - Train: expid = 312209, Epoch = 5, avg_loss = 73.99666709054044.
+2023-12-31 09:02:07,009 - INFO - epoch complete!
+2023-12-31 09:02:07,009 - INFO - evaluating now!
+2023-12-31 09:02:07,049 - INFO - {'mode': 'Eval', 'epoch': 5, 'iter': 0, 'lr': 0.00015000000000000001, 'loss': 14.849783897399902}
+2023-12-31 09:02:23,099 - INFO - {'mode': 'Eval', 'epoch': 5, 'iter': 500, 'lr': 0.00015000000000000001, 'loss': 29.864267349243164}
+2023-12-31 09:02:39,199 - INFO - {'mode': 'Eval', 'epoch': 5, 'iter': 1000, 'lr': 0.00015000000000000001, 'loss': 32.920326232910156}
+2023-12-31 09:02:52,938 - INFO - Eval: expid = 312209, Epoch = 5, avg_loss = 155.11395132737903.
+2023-12-31 09:02:52,938 - INFO - Epoch [5/15] (25698)  train_loss: 73.9967, val_loss: 155.1140, lr: 0.000131, 515.81s
+2023-12-31 09:02:53,128 - INFO - Saved model at 5
+2023-12-31 09:02:53,128 - INFO - Val loss decrease from 162.3204 to 155.1140, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch5.tar
+2023-12-31 09:02:53,238 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 0, 'lr': 0.00013090169943749476, 'loss': 50.08750534057617}
+2023-12-31 09:03:48,225 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 500, 'lr': 0.00013090169943749476, 'loss': 18.77701187133789}
+2023-12-31 09:04:43,189 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 1000, 'lr': 0.00013090169943749476, 'loss': 21.50603485107422}
+2023-12-31 09:05:38,036 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 1500, 'lr': 0.00013090169943749476, 'loss': 30.777667999267578}
+2023-12-31 09:06:33,066 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 2000, 'lr': 0.00013090169943749476, 'loss': 6.5428056716918945}
+2023-12-31 09:07:27,892 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 2500, 'lr': 0.00013090169943749476, 'loss': 485.5091247558594}
+2023-12-31 09:08:22,742 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 3000, 'lr': 0.00013090169943749476, 'loss': 9.06672477722168}
+2023-12-31 09:09:17,616 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 3500, 'lr': 0.00013090169943749476, 'loss': 96.30226135253906}
+2023-12-31 09:10:12,556 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 4000, 'lr': 0.00013090169943749476, 'loss': 38.70573425292969}
+2023-12-31 09:10:43,416 - INFO - Train: expid = 312209, Epoch = 6, avg_loss = 70.20979855484968.
+2023-12-31 09:10:43,416 - INFO - epoch complete!
+2023-12-31 09:10:43,416 - INFO - evaluating now!
+2023-12-31 09:10:43,446 - INFO - {'mode': 'Eval', 'epoch': 6, 'iter': 0, 'lr': 0.00013090169943749476, 'loss': 28.829694747924805}
+2023-12-31 09:10:59,456 - INFO - {'mode': 'Eval', 'epoch': 6, 'iter': 500, 'lr': 0.00013090169943749476, 'loss': 39.9632682800293}
+2023-12-31 09:11:15,581 - INFO - {'mode': 'Eval', 'epoch': 6, 'iter': 1000, 'lr': 0.00013090169943749476, 'loss': 20.86522674560547}
+2023-12-31 09:11:29,265 - INFO - Eval: expid = 312209, Epoch = 6, avg_loss = 153.35714463603057.
+2023-12-31 09:11:29,265 - INFO - Epoch [6/15] (29981)  train_loss: 70.2098, val_loss: 153.3571, lr: 0.000110, 516.14s
+2023-12-31 09:11:29,455 - INFO - Saved model at 6
+2023-12-31 09:11:29,455 - INFO - Val loss decrease from 155.1140 to 153.3571, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch6.tar
+2023-12-31 09:11:29,565 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 0, 'lr': 0.00011045284632676536, 'loss': 12.75277042388916}
+2023-12-31 09:12:24,385 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 500, 'lr': 0.00011045284632676536, 'loss': 10.345266342163086}
+2023-12-31 09:13:19,192 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 1000, 'lr': 0.00011045284632676536, 'loss': 29.32103157043457}
+2023-12-31 09:14:13,972 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 1500, 'lr': 0.00011045284632676536, 'loss': 19.81735610961914}
+2023-12-31 09:15:08,839 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 2000, 'lr': 0.00011045284632676536, 'loss': 21.945323944091797}
+2023-12-31 09:16:03,559 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 2500, 'lr': 0.00011045284632676536, 'loss': 35.0159797668457}
+2023-12-31 09:16:58,499 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 3000, 'lr': 0.00011045284632676536, 'loss': 18.598064422607422}
+2023-12-31 09:17:53,195 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 3500, 'lr': 0.00011045284632676536, 'loss': 21.423309326171875}
+2023-12-31 09:18:47,967 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 4000, 'lr': 0.00011045284632676536, 'loss': 33.03448486328125}
+2023-12-31 09:19:18,814 - INFO - Train: expid = 312209, Epoch = 7, avg_loss = 67.05182194158586.
+2023-12-31 09:19:18,814 - INFO - epoch complete!
+2023-12-31 09:19:18,814 - INFO - evaluating now!
+2023-12-31 09:19:18,854 - INFO - {'mode': 'Eval', 'epoch': 7, 'iter': 0, 'lr': 0.00011045284632676536, 'loss': 67.55653381347656}
+2023-12-31 09:19:34,864 - INFO - {'mode': 'Eval', 'epoch': 7, 'iter': 500, 'lr': 0.00011045284632676536, 'loss': 32.44295883178711}
+2023-12-31 09:19:50,894 - INFO - {'mode': 'Eval', 'epoch': 7, 'iter': 1000, 'lr': 0.00011045284632676536, 'loss': 52.26868438720703}
+2023-12-31 09:20:04,574 - INFO - Eval: expid = 312209, Epoch = 7, avg_loss = 157.46179152670757.
+2023-12-31 09:20:04,574 - INFO - Epoch [7/15] (34264)  train_loss: 67.0518, val_loss: 157.4618, lr: 0.000090, 515.12s
+2023-12-31 09:20:04,684 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 0, 'lr': 8.954715367323468e-05, 'loss': 51.747276306152344}
+2023-12-31 09:20:59,564 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 500, 'lr': 8.954715367323468e-05, 'loss': 10.435372352600098}
+2023-12-31 09:21:54,533 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 1000, 'lr': 8.954715367323468e-05, 'loss': 845.4677734375}
+2023-12-31 09:22:49,393 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 1500, 'lr': 8.954715367323468e-05, 'loss': 30.236005783081055}
+2023-12-31 09:23:44,120 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 2000, 'lr': 8.954715367323468e-05, 'loss': 91.87101745605469}
+2023-12-31 09:24:38,970 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 2500, 'lr': 8.954715367323468e-05, 'loss': 19.3426513671875}
+2023-12-31 09:25:33,824 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 3000, 'lr': 8.954715367323468e-05, 'loss': 59.73710250854492}
+2023-12-31 09:26:28,644 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 3500, 'lr': 8.954715367323468e-05, 'loss': 38.55793762207031}
+2023-12-31 09:27:23,420 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 4000, 'lr': 8.954715367323468e-05, 'loss': 30.62641716003418}
+2023-12-31 09:27:54,280 - INFO - Train: expid = 312209, Epoch = 8, avg_loss = 64.12972196532435.
+2023-12-31 09:27:54,280 - INFO - epoch complete!
+2023-12-31 09:27:54,280 - INFO - evaluating now!
+2023-12-31 09:27:54,320 - INFO - {'mode': 'Eval', 'epoch': 8, 'iter': 0, 'lr': 8.954715367323468e-05, 'loss': 63.276676177978516}
+2023-12-31 09:28:10,320 - INFO - {'mode': 'Eval', 'epoch': 8, 'iter': 500, 'lr': 8.954715367323468e-05, 'loss': 22.306211471557617}
+2023-12-31 09:28:26,340 - INFO - {'mode': 'Eval', 'epoch': 8, 'iter': 1000, 'lr': 8.954715367323468e-05, 'loss': 14.2818021774292}
+2023-12-31 09:28:40,040 - INFO - Eval: expid = 312209, Epoch = 8, avg_loss = 160.78418004942858.
+2023-12-31 09:28:40,040 - INFO - Epoch [8/15] (38547)  train_loss: 64.1297, val_loss: 160.7842, lr: 0.000069, 515.47s
+2023-12-31 09:28:40,150 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 0, 'lr': 6.909830056250527e-05, 'loss': 10.65014934539795}
+2023-12-31 09:29:35,053 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 500, 'lr': 6.909830056250527e-05, 'loss': 27.79229736328125}
+2023-12-31 09:30:29,963 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 1000, 'lr': 6.909830056250527e-05, 'loss': 15.378190994262695}
+2023-12-31 09:31:24,880 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 1500, 'lr': 6.909830056250527e-05, 'loss': 32.071434020996094}
+2023-12-31 09:32:19,965 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 2000, 'lr': 6.909830056250527e-05, 'loss': 9.801973342895508}
+2023-12-31 09:33:14,894 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 2500, 'lr': 6.909830056250527e-05, 'loss': 10.701302528381348}
+2023-12-31 09:34:09,838 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 3000, 'lr': 6.909830056250527e-05, 'loss': 41.9863395690918}
+2023-12-31 09:35:04,718 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 3500, 'lr': 6.909830056250527e-05, 'loss': 42.22123336791992}
+2023-12-31 09:35:59,658 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 4000, 'lr': 6.909830056250527e-05, 'loss': 10.8348970413208}
+2023-12-31 09:36:30,728 - INFO - Train: expid = 312209, Epoch = 9, avg_loss = 62.34884763684023.
+2023-12-31 09:36:30,728 - INFO - epoch complete!
+2023-12-31 09:36:30,728 - INFO - evaluating now!
+2023-12-31 09:36:30,768 - INFO - {'mode': 'Eval', 'epoch': 9, 'iter': 0, 'lr': 6.909830056250527e-05, 'loss': 21.226877212524414}
+2023-12-31 09:36:46,810 - INFO - {'mode': 'Eval', 'epoch': 9, 'iter': 500, 'lr': 6.909830056250527e-05, 'loss': 19.301591873168945}
+2023-12-31 09:37:02,881 - INFO - {'mode': 'Eval', 'epoch': 9, 'iter': 1000, 'lr': 6.909830056250527e-05, 'loss': 17.178274154663086}
+2023-12-31 09:37:16,617 - INFO - Eval: expid = 312209, Epoch = 9, avg_loss = 149.92930750162088.
+2023-12-31 09:37:16,617 - INFO - Epoch [9/15] (42830)  train_loss: 62.3488, val_loss: 149.9293, lr: 0.000050, 516.58s
+2023-12-31 09:37:16,797 - INFO - Saved model at 9
+2023-12-31 09:37:16,797 - INFO - Val loss decrease from 153.3571 to 149.9293, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch9.tar
+2023-12-31 09:37:16,907 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 0, 'lr': 5.000000000000002e-05, 'loss': 8.10883903503418}
+2023-12-31 09:38:11,977 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 500, 'lr': 5.000000000000002e-05, 'loss': 8.42645263671875}
+2023-12-31 09:39:06,924 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 1000, 'lr': 5.000000000000002e-05, 'loss': 43.039302825927734}
+2023-12-31 09:40:02,004 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 1500, 'lr': 5.000000000000002e-05, 'loss': 17.66399383544922}
+2023-12-31 09:40:57,114 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 2000, 'lr': 5.000000000000002e-05, 'loss': 6.55194091796875}
+2023-12-31 09:41:52,051 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 2500, 'lr': 5.000000000000002e-05, 'loss': 16.83576774597168}
+2023-12-31 09:42:47,021 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 3000, 'lr': 5.000000000000002e-05, 'loss': 12.788572311401367}
+2023-12-31 09:43:42,088 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 3500, 'lr': 5.000000000000002e-05, 'loss': 8.77294921875}
+2023-12-31 09:44:36,978 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 4000, 'lr': 5.000000000000002e-05, 'loss': 20.043235778808594}
+2023-12-31 09:45:08,074 - INFO - Train: expid = 312209, Epoch = 10, avg_loss = 60.632933898525806.
+2023-12-31 09:45:08,074 - INFO - epoch complete!
+2023-12-31 09:45:08,074 - INFO - evaluating now!
+2023-12-31 09:45:08,104 - INFO - {'mode': 'Eval', 'epoch': 10, 'iter': 0, 'lr': 5.000000000000002e-05, 'loss': 22.21381950378418}
+2023-12-31 09:45:24,144 - INFO - {'mode': 'Eval', 'epoch': 10, 'iter': 500, 'lr': 5.000000000000002e-05, 'loss': 22.523160934448242}
+2023-12-31 09:45:40,234 - INFO - {'mode': 'Eval', 'epoch': 10, 'iter': 1000, 'lr': 5.000000000000002e-05, 'loss': 20.38728904724121}
+2023-12-31 09:45:53,974 - INFO - Eval: expid = 312209, Epoch = 10, avg_loss = 149.41879541711089.
+2023-12-31 09:45:53,974 - INFO - Epoch [10/15] (47113)  train_loss: 60.6329, val_loss: 149.4188, lr: 0.000033, 517.18s
+2023-12-31 09:45:54,154 - INFO - Saved model at 10
+2023-12-31 09:45:54,154 - INFO - Val loss decrease from 149.9293 to 149.4188, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch10.tar
+2023-12-31 09:45:54,264 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 0, 'lr': 3.308693936411421e-05, 'loss': 22.967620849609375}
+2023-12-31 09:46:49,324 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 500, 'lr': 3.308693936411421e-05, 'loss': 5.523733139038086}
+2023-12-31 09:47:44,145 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 1000, 'lr': 3.308693936411421e-05, 'loss': 3.038217067718506}
+2023-12-31 09:48:39,087 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 1500, 'lr': 3.308693936411421e-05, 'loss': 7.6850409507751465}
+2023-12-31 09:49:34,053 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 2000, 'lr': 3.308693936411421e-05, 'loss': 23.515525817871094}
+2023-12-31 09:50:29,062 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 2500, 'lr': 3.308693936411421e-05, 'loss': 28.720558166503906}
+2023-12-31 09:51:23,975 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 3000, 'lr': 3.308693936411421e-05, 'loss': 140.18482971191406}
+2023-12-31 09:52:19,037 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 3500, 'lr': 3.308693936411421e-05, 'loss': 21.584836959838867}
+2023-12-31 09:53:14,011 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 4000, 'lr': 3.308693936411421e-05, 'loss': 17.13252067565918}
+2023-12-31 09:53:44,981 - INFO - Train: expid = 312209, Epoch = 11, avg_loss = 58.70314860228405.
+2023-12-31 09:53:44,981 - INFO - epoch complete!
+2023-12-31 09:53:44,981 - INFO - evaluating now!
+2023-12-31 09:53:45,011 - INFO - {'mode': 'Eval', 'epoch': 11, 'iter': 0, 'lr': 3.308693936411421e-05, 'loss': 21.650829315185547}
+2023-12-31 09:54:01,071 - INFO - {'mode': 'Eval', 'epoch': 11, 'iter': 500, 'lr': 3.308693936411421e-05, 'loss': 49.214599609375}
+2023-12-31 09:54:17,111 - INFO - {'mode': 'Eval', 'epoch': 11, 'iter': 1000, 'lr': 3.308693936411421e-05, 'loss': 28.946102142333984}
+2023-12-31 09:54:30,831 - INFO - Eval: expid = 312209, Epoch = 11, avg_loss = 149.48102933955485.
+2023-12-31 09:54:30,841 - INFO - Epoch [11/15] (51396)  train_loss: 58.7031, val_loss: 149.4810, lr: 0.000019, 516.69s
+2023-12-31 09:54:30,951 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 0, 'lr': 1.9098300562505266e-05, 'loss': 14.222217559814453}
+2023-12-31 09:55:25,838 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 500, 'lr': 1.9098300562505266e-05, 'loss': 9.276652336120605}
+2023-12-31 09:56:20,748 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 1000, 'lr': 1.9098300562505266e-05, 'loss': 45.68079376220703}
+2023-12-31 09:57:15,705 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 1500, 'lr': 1.9098300562505266e-05, 'loss': 160.16607666015625}
+2023-12-31 09:58:10,535 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 2000, 'lr': 1.9098300562505266e-05, 'loss': 89.62353515625}
+2023-12-31 09:59:05,481 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 2500, 'lr': 1.9098300562505266e-05, 'loss': 31.07978057861328}
+2023-12-31 10:00:00,321 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 3000, 'lr': 1.9098300562505266e-05, 'loss': 17.654407501220703}
+2023-12-31 10:00:55,211 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 3500, 'lr': 1.9098300562505266e-05, 'loss': 82.95689392089844}
+2023-12-31 10:01:50,143 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 4000, 'lr': 1.9098300562505266e-05, 'loss': 62.94515609741211}
+2023-12-31 10:02:21,723 - INFO - Train: expid = 312209, Epoch = 12, avg_loss = 57.28146638814007.
+2023-12-31 10:02:21,723 - INFO - epoch complete!
+2023-12-31 10:02:21,723 - INFO - evaluating now!
+2023-12-31 10:02:21,763 - INFO - {'mode': 'Eval', 'epoch': 12, 'iter': 0, 'lr': 1.9098300562505266e-05, 'loss': 21.559097290039062}
+2023-12-31 10:02:37,872 - INFO - {'mode': 'Eval', 'epoch': 12, 'iter': 500, 'lr': 1.9098300562505266e-05, 'loss': 71.7925033569336}
+2023-12-31 10:02:54,071 - INFO - {'mode': 'Eval', 'epoch': 12, 'iter': 1000, 'lr': 1.9098300562505266e-05, 'loss': 11.641425132751465}
+2023-12-31 10:03:07,836 - INFO - Eval: expid = 312209, Epoch = 12, avg_loss = 148.04253335550246.
+2023-12-31 10:03:07,836 - INFO - Epoch [12/15] (55679)  train_loss: 57.2815, val_loss: 148.0425, lr: 0.000009, 516.99s
+2023-12-31 10:03:08,027 - INFO - Saved model at 12
+2023-12-31 10:03:08,027 - INFO - Val loss decrease from 149.4188 to 148.0425, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch12.tar
+2023-12-31 10:03:08,137 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 0, 'lr': 8.645454235739903e-06, 'loss': 34.44829559326172}
+2023-12-31 10:04:03,094 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 500, 'lr': 8.645454235739903e-06, 'loss': 68.13660430908203}
+2023-12-31 10:04:58,138 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 1000, 'lr': 8.645454235739903e-06, 'loss': 15.675151824951172}
+2023-12-31 10:05:52,989 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 1500, 'lr': 8.645454235739903e-06, 'loss': 22.773351669311523}
+2023-12-31 10:06:47,919 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 2000, 'lr': 8.645454235739903e-06, 'loss': 33.67230987548828}
+2023-12-31 10:07:42,789 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 2500, 'lr': 8.645454235739903e-06, 'loss': 33.82646179199219}
+2023-12-31 10:08:37,769 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 3000, 'lr': 8.645454235739903e-06, 'loss': 62.06792449951172}
+2023-12-31 10:09:32,776 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 3500, 'lr': 8.645454235739903e-06, 'loss': 6.93927001953125}
+2023-12-31 10:10:27,839 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 4000, 'lr': 8.645454235739903e-06, 'loss': 1.991302490234375}
+2023-12-31 10:10:58,949 - INFO - Train: expid = 312209, Epoch = 13, avg_loss = 56.15289141825727.
+2023-12-31 10:10:58,949 - INFO - epoch complete!
+2023-12-31 10:10:58,949 - INFO - evaluating now!
+2023-12-31 10:10:58,979 - INFO - {'mode': 'Eval', 'epoch': 13, 'iter': 0, 'lr': 8.645454235739903e-06, 'loss': 7.797928333282471}
+2023-12-31 10:11:14,995 - INFO - {'mode': 'Eval', 'epoch': 13, 'iter': 500, 'lr': 8.645454235739903e-06, 'loss': 155.73782348632812}
+2023-12-31 10:11:31,065 - INFO - {'mode': 'Eval', 'epoch': 13, 'iter': 1000, 'lr': 8.645454235739903e-06, 'loss': 15.513349533081055}
+2023-12-31 10:11:44,805 - INFO - Eval: expid = 312209, Epoch = 13, avg_loss = 148.91027725348332.
+2023-12-31 10:11:44,805 - INFO - Epoch [13/15] (59962)  train_loss: 56.1529, val_loss: 148.9103, lr: 0.000002, 516.78s
+2023-12-31 10:11:44,926 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 0, 'lr': 2.1852399266194314e-06, 'loss': 4.459120273590088}
+2023-12-31 10:12:40,075 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 500, 'lr': 2.1852399266194314e-06, 'loss': 13.234968185424805}
+2023-12-31 10:13:35,162 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 1000, 'lr': 2.1852399266194314e-06, 'loss': 69.61170959472656}
+2023-12-31 10:14:30,242 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 1500, 'lr': 2.1852399266194314e-06, 'loss': 12.912492752075195}
+2023-12-31 10:15:25,319 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 2000, 'lr': 2.1852399266194314e-06, 'loss': 34.024173736572266}
+2023-12-31 10:16:20,309 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 2500, 'lr': 2.1852399266194314e-06, 'loss': 42.58304214477539}
+2023-12-31 10:17:15,285 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 3000, 'lr': 2.1852399266194314e-06, 'loss': 7.1608662605285645}
+2023-12-31 10:18:10,299 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 3500, 'lr': 2.1852399266194314e-06, 'loss': 35.9760627746582}
+2023-12-31 10:19:05,279 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 4000, 'lr': 2.1852399266194314e-06, 'loss': 10.189827919006348}
+2023-12-31 10:19:36,346 - INFO - Train: expid = 312209, Epoch = 14, avg_loss = 55.628997332919354.
+2023-12-31 10:19:36,346 - INFO - epoch complete!
+2023-12-31 10:19:36,346 - INFO - evaluating now!
+2023-12-31 10:19:36,386 - INFO - {'mode': 'Eval', 'epoch': 14, 'iter': 0, 'lr': 2.1852399266194314e-06, 'loss': 31.143430709838867}
+2023-12-31 10:19:52,426 - INFO - {'mode': 'Eval', 'epoch': 14, 'iter': 500, 'lr': 2.1852399266194314e-06, 'loss': 177.27761840820312}
+2023-12-31 10:20:08,516 - INFO - {'mode': 'Eval', 'epoch': 14, 'iter': 1000, 'lr': 2.1852399266194314e-06, 'loss': 36.959075927734375}
+2023-12-31 10:20:22,236 - INFO - Eval: expid = 312209, Epoch = 14, avg_loss = 147.856623547382.
+2023-12-31 10:20:22,236 - INFO - Epoch [14/15] (64245)  train_loss: 55.6290, val_loss: 147.8566, lr: 0.000020, 517.42s
+2023-12-31 10:20:22,416 - INFO - Saved model at 14
+2023-12-31 10:20:22,416 - INFO - Val loss decrease from 148.0425 to 147.8566, saving to ./libcity/cache/312209/model_cache/LinearETA_bj_epoch14.tar
+2023-12-31 10:20:22,416 - INFO - Trained totally 15 epochs, average train time is 469.323s, average eval time is 45.814s
+2023-12-31 10:20:22,496 - INFO - Loaded model at 14
+2023-12-31 10:20:22,566 - INFO - Save png at ./libcity/cache/312209/312209_loss.png
+2023-12-31 10:20:22,626 - INFO - Save png at ./libcity/cache/312209/312209_lr.png
+2023-12-31 10:20:22,766 - INFO - Saved model at ./libcity/cache/312209/model_cache/312209_LinearETA_bj.pt
+2023-12-31 10:20:22,766 - INFO - Start evaluating ...
+2023-12-31 10:20:22,806 - INFO - {'mode': 'Test', 'epoch': 0, 'iter': 0, 'lr': 2e-05, 'loss': 37.379486083984375}
+2023-12-31 10:20:40,136 - INFO - {'mode': 'Test', 'epoch': 0, 'iter': 500, 'lr': 2e-05, 'loss': 72.9919204711914}
+2023-12-31 10:20:57,414 - INFO - {'mode': 'Test', 'epoch': 0, 'iter': 1000, 'lr': 2e-05, 'loss': 32.19857406616211}
+2023-12-31 10:21:12,231 - INFO - Test: expid = 312209, Epoch = 0, avg_loss = 72.44381072617246.
+2023-12-31 10:21:12,231 - INFO - Evaluate result is {"MAE": 4.101749449467459, "RMSE": 5.795358643102713, "MAPE": 0.30920751262404006, "R2": 0.5931521362204839, "EVAR": 0.6506256187746838}
+2023-12-31 10:21:12,231 - INFO - Evaluate result is saved at ./libcity/cache/312209/evaluate_cache\312209_2023_12_31_10_21_12_LinearETA_bj.json
+2023-12-31 10:21:12,231 - INFO - 
+{
+ "MAE": 4.101749449467459,
+ "RMSE": 5.795358643102713,
+ "MAPE": 0.30920751262404006,
+ "R2": 0.5931521362204839,
+ "EVAR": 0.6506256187746838
+}
+2023-12-31 10:21:12,231 - INFO - Evaluate result is saved at ./libcity/cache/312209/evaluate_cache\312209_2023_12_31_10_21_12_LinearETA_bj.csv
+2023-12-31 10:21:12,241 - INFO - 
+        MAE      RMSE      MAPE        R2      EVAR
+1  4.101749  5.795359  0.309208  0.593152  0.650626
+2023-12-31 10:21:12,241 - INFO - Test time 49.474780321121216s.

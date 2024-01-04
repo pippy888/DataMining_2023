@@ -1,0 +1,425 @@
+2024-01-01 15:49:31,781 - INFO - Log directory: ./libcity/log
+2024-01-01 15:49:31,781 - INFO - Begin pretrain-pipeline, task=trajectory_embedding, model_name=LinearETA, dataset_name=bj, exp_id=716405
+2024-01-01 15:49:31,781 - INFO - {'task': 'trajectory_embedding', 'model': 'LinearETA', 'dataset': 'bj', 'saved_model': True, 'train': True, 'gpu': True, 'gpu_id': 0, 'pretrain_path': 'libcity/cache/171360/model_cache/171360_BERTContrastiveLM_bj.pt', 'n_layers': 6, 'd_model': 256, 'attn_heads': 8, 'max_epoch': 5, 'batch_size': 8, 'grad_accmu_steps': 1, 'learning_rate': 0.0002, 'roadnetwork': 'bj_roadmap_edge_bj_True_1_merge', 'geo_file': 'bj_roadmap_edge_bj_True_1_merge_withdegree', 'rel_file': 'bj_roadmap_edge_bj_True_1_merge_withdegree', 'merge': True, 'min_freq': 1, 'seq_len': 128, 'test_every': 50, 'temperature': 0.05, 'contra_loss_type': 'simclr', 'classify_label': 'vflag', 'type_ln': 'post', 'add_cls': True, 'add_time_in_day': True, 'add_day_in_week': True, 'add_pe': True, 'add_temporal_bias': True, 'temporal_bias_dim': 64, 'use_mins_interval': False, 'add_gat': True, 'gat_heads_per_layer': [8, 16, 1], 'gat_features_per_layer': [16, 16, 256], 'gat_dropout': 0.1, 'gat_K': 1, 'gat_avg_last': True, 'load_trans_prob': True, 'append_degree2gcn': True, 'normal_feature': False, 'pooling': 'cls', 'dataset_class': 'ETADataset', 'executor': 'ETAExecutor', 'evaluator': 'RegressionEvaluator', 'num_workers': 0, 'vocab_path': None, 'mlp_ratio': 4, 'pretrain_road_emb': None, 'future_mask': False, 'load_node2vec': False, 'dropout': 0.1, 'drop_path': 0.3, 'attn_drop': 0.1, 'seed': 0, 'learner': 'adamw', 'lr_eta_min': 0, 'lr_warmup_epoch': 4, 'lr_warmup_init': 1e-06, 'lr_decay': True, 'lr_scheduler': 'cosinelr', 'lr_decay_ratio': 0.1, 't_in_epochs': True, 'clip_grad_norm': True, 'max_grad_norm': 5, 'use_early_stop': True, 'patience': 10, 'log_batch': 500, 'log_every': 1, 'l2_reg': None, 'bidir_adj_mx': False, 'freeze': False, 'metrics': ['MAE', 'RMSE', 'MAPE', 'R2', 'EVAR'], 'save_modes': ['csv', 'json'], 'device': device(type='cuda', index=0), 'exp_id': 716405}
+2024-01-01 15:49:32,480 - INFO - Loading Vocab from raw_data/vocab_bj_True_1_merge.pkl
+2024-01-01 15:49:32,496 - INFO - vocab_path=raw_data/vocab_bj_True_1_merge.pkl, usr_num=75, vocab_size=27313
+2024-01-01 15:49:32,543 - INFO - Loaded file bj_roadmap_edge_bj_True_1_merge_withdegree.geo, num_nodes=27309
+2024-01-01 15:49:33,954 - INFO - Loaded file bj_roadmap_edge_bj_True_1_merge_withdegree.rel, shape=(27309, 27309), edges=51196.0
+2024-01-01 15:49:33,954 - INFO - node_features: (27309, 42)
+2024-01-01 15:49:35,423 - INFO - node_features_encoded: torch.Size([27313, 42])
+2024-01-01 15:49:35,565 - INFO - edge_index: torch.Size([2, 78471])
+2024-01-01 15:49:35,565 - INFO - Trajectory loc-transfer prob shape=torch.Size([78471, 1])
+2024-01-01 15:49:35,580 - INFO - Loading Dataset!
+2024-01-01 15:49:36,634 - INFO - Load dataset from raw_data/bj/cache_bj_train_True_True_1.pkl
+2024-01-01 15:49:36,962 - INFO - Load dataset from raw_data/bj/cache_bj_eval_True_True_1.pkl
+2024-01-01 15:49:37,322 - INFO - Load dataset from raw_data/bj/cache_bj_test_True_True_1.pkl
+2024-01-01 15:49:37,322 - INFO - Size of dataset: 10510/3504/3504
+2024-01-01 15:49:37,322 - INFO - Creating Dataloader!
+2024-01-01 15:49:37,322 - INFO - Building Downstream LinearETA model
+2024-01-01 15:49:37,322 - INFO - Building BERTDownstream model
+2024-01-01 15:49:38,074 - INFO - LinearETA(
+  (model): BERTDownstream(
+    (bert): BERT(
+      (embedding): BERTEmbedding(
+        (token_embedding): GAT(
+          (gat_net): Sequential(
+            (0): GATLayerImp3(
+              (linear_proj): Linear(in_features=42, out_features=128, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=128, bias=False)
+              (skip_proj): Linear(in_features=42, out_features=128, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (activation): ELU(alpha=1.0)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (1): GATLayerImp3(
+              (linear_proj): Linear(in_features=128, out_features=256, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=256, bias=False)
+              (skip_proj): Linear(in_features=128, out_features=256, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (activation): ELU(alpha=1.0)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (2): GATLayerImp3(
+              (linear_proj): Linear(in_features=256, out_features=256, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=256, bias=False)
+              (skip_proj): Linear(in_features=256, out_features=256, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (position_embedding): PositionalEmbedding()
+        (daytime_embedding): Embedding(1441, 256, padding_idx=0)
+        (weekday_embedding): Embedding(8, 256, padding_idx=0)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (transformer_blocks): ModuleList(
+        (0): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): Identity()
+        )
+        (1): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (2): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (3): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (4): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (5): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+      )
+    )
+  )
+  (linear): Linear(in_features=256, out_features=1, bias=True)
+)
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_fn_target	torch.Size([1, 8, 16])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_fn_source	torch.Size([1, 8, 16])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_trans_prob	torch.Size([1, 8, 16])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.0.bias	torch.Size([128])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.0.linear_proj.weight	torch.Size([128, 42])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.0.linear_proj_tran_prob.weight	torch.Size([128, 1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.0.skip_proj.weight	torch.Size([128, 42])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_fn_target	torch.Size([1, 16, 16])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_fn_source	torch.Size([1, 16, 16])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_trans_prob	torch.Size([1, 16, 16])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.1.linear_proj.weight	torch.Size([256, 128])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.1.linear_proj_tran_prob.weight	torch.Size([256, 1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.1.skip_proj.weight	torch.Size([256, 128])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_fn_target	torch.Size([1, 1, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_fn_source	torch.Size([1, 1, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_trans_prob	torch.Size([1, 1, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.2.linear_proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.2.linear_proj_tran_prob.weight	torch.Size([256, 1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.token_embedding.gat_net.2.skip_proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.daytime_embedding.weight	torch.Size([1441, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.embedding.weekday_embedding.weight	torch.Size([8, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.0.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.1.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.2.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.3.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-01 15:49:38,090 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.4.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - model.bert.transformer_blocks.5.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - linear.weight	torch.Size([1, 256])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - linear.bias	torch.Size([1])	cuda:0	True
+2024-01-01 15:49:38,105 - INFO - Total parameter numbers: 5321479
+2024-01-01 15:49:38,105 - INFO - You select `adamw` optimizer.
+2024-01-01 15:49:38,105 - INFO - You select `cosinelr` lr_scheduler.
+2024-01-01 15:49:38,168 - INFO - Load Pretrained-Model from libcity/cache/171360/model_cache/171360_BERTContrastiveLM_bj.pt
+2024-01-01 15:49:38,199 - INFO - Start training ...
+2024-01-01 15:49:38,199 - INFO - Num_batches: train=1314, eval=438
+2024-01-01 15:49:38,997 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 0, 'lr': 1e-06, 'loss': 0.20170515775680542}
+2024-01-01 15:50:26,847 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 500, 'lr': 1e-06, 'loss': 0.030257564038038254}
+2024-01-01 15:51:15,746 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 1000, 'lr': 1e-06, 'loss': 0.050782110542058945}
+2024-01-01 15:51:46,421 - INFO - Train: expid = 716405, Epoch = 0, avg_loss = 0.33180808586278465.
+2024-01-01 15:51:46,431 - INFO - epoch complete!
+2024-01-01 15:51:46,431 - INFO - evaluating now!
+2024-01-01 15:51:46,461 - INFO - {'mode': 'Eval', 'epoch': 0, 'iter': 0, 'lr': 1e-06, 'loss': 0.007251870818436146}
+2024-01-01 15:51:59,148 - INFO - Eval: expid = 716405, Epoch = 0, avg_loss = 0.21658515761612773.
+2024-01-01 15:51:59,148 - INFO - Epoch [0/5] (1314)  train_loss: 0.3318, val_loss: 0.2166, lr: 0.000051, 140.95s
+2024-01-01 15:51:59,348 - INFO - Saved model at 0
+2024-01-01 15:51:59,348 - INFO - Val loss decrease from inf to 0.2166, saving to ./libcity/cache/716405/model_cache/LinearETA_bj_epoch0.tar
+2024-01-01 15:51:59,448 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 0, 'lr': 5.075e-05, 'loss': 0.03563894331455231}
+2024-01-01 15:52:48,682 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 500, 'lr': 5.075e-05, 'loss': 0.02402607351541519}
+2024-01-01 15:53:37,998 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 1000, 'lr': 5.075e-05, 'loss': 0.0541023313999176}
+2024-01-01 15:54:08,833 - INFO - Train: expid = 716405, Epoch = 1, avg_loss = 0.1753548347009266.
+2024-01-01 15:54:08,833 - INFO - epoch complete!
+2024-01-01 15:54:08,833 - INFO - evaluating now!
+2024-01-01 15:54:08,863 - INFO - {'mode': 'Eval', 'epoch': 1, 'iter': 0, 'lr': 5.075e-05, 'loss': 0.018918391317129135}
+2024-01-01 15:54:21,656 - INFO - Eval: expid = 716405, Epoch = 1, avg_loss = 0.07411533966155502.
+2024-01-01 15:54:21,656 - INFO - Epoch [1/5] (2628)  train_loss: 0.1754, val_loss: 0.0741, lr: 0.000101, 142.31s
+2024-01-01 15:54:21,846 - INFO - Saved model at 1
+2024-01-01 15:54:21,846 - INFO - Val loss decrease from 0.2166 to 0.0741, saving to ./libcity/cache/716405/model_cache/LinearETA_bj_epoch1.tar
+2024-01-01 15:54:21,946 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 0, 'lr': 0.0001005, 'loss': 0.01545373909175396}
+2024-01-01 15:55:11,568 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 500, 'lr': 0.0001005, 'loss': 0.01991664245724678}
+2024-01-01 15:56:01,382 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 1000, 'lr': 0.0001005, 'loss': 0.017432477325201035}
+2024-01-01 15:56:34,525 - INFO - Train: expid = 716405, Epoch = 2, avg_loss = 0.1430694277335373.
+2024-01-01 15:56:34,525 - INFO - epoch complete!
+2024-01-01 15:56:34,525 - INFO - evaluating now!
+2024-01-01 15:56:34,559 - INFO - {'mode': 'Eval', 'epoch': 2, 'iter': 0, 'lr': 0.0001005, 'loss': 0.010581687092781067}
+2024-01-01 15:56:48,869 - INFO - Eval: expid = 716405, Epoch = 2, avg_loss = 0.081343083233109.
+2024-01-01 15:56:48,874 - INFO - Epoch [2/5] (3942)  train_loss: 0.1431, val_loss: 0.0813, lr: 0.000150, 147.03s
+2024-01-01 15:56:48,990 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 0, 'lr': 0.00015025000000000002, 'loss': 0.008238616399466991}
+2024-01-01 15:57:38,585 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 500, 'lr': 0.00015025000000000002, 'loss': 0.01413124892860651}
+2024-01-01 15:58:27,890 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 1000, 'lr': 0.00015025000000000002, 'loss': 1.2685067653656006}
+2024-01-01 15:58:58,822 - INFO - Train: expid = 716405, Epoch = 3, avg_loss = 0.13518201770654373.
+2024-01-01 15:58:58,822 - INFO - epoch complete!
+2024-01-01 15:58:58,832 - INFO - evaluating now!
+2024-01-01 15:58:58,862 - INFO - {'mode': 'Eval', 'epoch': 3, 'iter': 0, 'lr': 0.00015025000000000002, 'loss': 1.2983626127243042}
+2024-01-01 15:59:11,820 - INFO - Eval: expid = 716405, Epoch = 3, avg_loss = 0.10629055434922989.
+2024-01-01 15:59:11,820 - INFO - Epoch [3/5] (5256)  train_loss: 0.1352, val_loss: 0.1063, lr: 0.000019, 142.95s
+2024-01-01 15:59:11,920 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 0, 'lr': 1.9098300562505266e-05, 'loss': 0.01176607608795166}
+2024-01-01 16:00:01,554 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 500, 'lr': 1.9098300562505266e-05, 'loss': 0.010274797677993774}
+2024-01-01 16:00:51,204 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 1000, 'lr': 1.9098300562505266e-05, 'loss': 0.00721590593457222}
+2024-01-01 16:01:22,162 - INFO - Train: expid = 716405, Epoch = 4, avg_loss = 0.10371247528592296.
+2024-01-01 16:01:22,162 - INFO - epoch complete!
+2024-01-01 16:01:22,162 - INFO - evaluating now!
+2024-01-01 16:01:22,192 - INFO - {'mode': 'Eval', 'epoch': 4, 'iter': 0, 'lr': 1.9098300562505266e-05, 'loss': 0.005895281210541725}
+2024-01-01 16:01:35,157 - INFO - Eval: expid = 716405, Epoch = 4, avg_loss = 0.07729655207952349.
+2024-01-01 16:01:35,157 - INFO - Epoch [4/5] (6570)  train_loss: 0.1037, val_loss: 0.0773, lr: 0.000020, 143.34s
+2024-01-01 16:01:35,157 - INFO - Trained totally 5 epochs, average train time is 130.137s, average eval time is 13.175s
+2024-01-01 16:01:35,317 - INFO - Loaded model at 1
+2024-01-01 16:01:35,397 - INFO - Save png at ./libcity/cache/716405/716405_loss.png
+2024-01-01 16:01:35,457 - INFO - Save png at ./libcity/cache/716405/716405_lr.png
+2024-01-01 16:01:35,617 - INFO - Saved model at ./libcity/cache/716405/model_cache/716405_LinearETA_bj.pt
+2024-01-01 16:01:35,617 - INFO - Start evaluating ...
+2024-01-01 16:01:35,657 - INFO - {'mode': 'Test', 'epoch': 0, 'iter': 0, 'lr': 0.0001005, 'loss': 0.04702986404299736}
+2024-01-01 16:01:49,605 - INFO - Test: expid = 716405, Epoch = 0, avg_loss = 0.0919048898150617.
+2024-01-01 16:01:49,605 - INFO - Evaluate result is {"MAE": 0.11065329516468118, "RMSE": 0.17868030417421366, "MAPE": 0.3866373856794344, "R2": -0.18148161488639805, "EVAR": 0.031068553118945255}
+2024-01-01 16:01:49,605 - INFO - Evaluate result is saved at ./libcity/cache/716405/evaluate_cache\716405_2024_01_01_16_01_49_LinearETA_bj.json
+2024-01-01 16:01:49,605 - INFO - 
+{
+ "MAE": 0.11065329516468118,
+ "RMSE": 0.17868030417421366,
+ "MAPE": 0.3866373856794344,
+ "R2": -0.18148161488639805,
+ "EVAR": 0.031068553118945255
+}
+2024-01-01 16:01:49,605 - INFO - Evaluate result is saved at ./libcity/cache/716405/evaluate_cache\716405_2024_01_01_16_01_49_LinearETA_bj.csv
+2024-01-01 16:01:49,615 - INFO - 
+        MAE     RMSE      MAPE        R2      EVAR
+1  0.110653  0.17868  0.386637 -0.181482  0.031069
+2024-01-01 16:01:49,615 - INFO - Test time 13.998042583465576s.

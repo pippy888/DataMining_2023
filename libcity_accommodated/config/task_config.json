@@ -1,0 +1,29 @@
+{
+    "trajectory_embedding": {
+        "BERTLM": {
+            "dataset_class": "BERTLMDataset",
+            "executor": "BertBaseExecutor",
+            "evaluator": "ClassificationEvaluator"
+        },
+        "BERTContrastive": {
+            "dataset_class": "ContrastiveDataset",
+            "executor": "ContrastiveExecutor",
+            "evaluator": "ClassificationEvaluator"
+        },
+        "BERTContrastiveLM": {
+            "dataset_class": "ContrastiveLMDataset",
+            "executor": "ContrastiveMLMExecutor",
+            "evaluator": "ClassificationEvaluator"
+        },
+        "LinearETA": {
+            "dataset_class": "ETADataset",
+            "executor": "ETAExecutor",
+            "evaluator": "RegressionEvaluator"
+        },
+        "LinearNextLoc": {
+            "dataset_class": "NextLocDataset",
+            "executor": "NextLocExecutor",
+            "evaluator": "RegressionEvaluator"
+        }
+    }
+}

@@ -1,0 +1,553 @@
+2024-01-02 15:40:19,996 - INFO - Log directory: ./libcity/log
+2024-01-02 15:40:19,997 - INFO - Begin pretrain-pipeline, task=trajectory_embedding, model_name=LinearNextLoc, dataset_name=bj, exp_id=765699
+2024-01-02 15:40:19,997 - INFO - {'task': 'trajectory_embedding', 'model': 'LinearNextLoc', 'dataset': 'bj', 'saved_model': True, 'train': True, 'gpu': True, 'gpu_id': 0, 'pretrain_path': 'libcity/cache/454824/model_cache/454824_BERTContrastiveLM_bj.pt', 'n_layers': 6, 'd_model': 256, 'attn_heads': 8, 'max_epoch': 30, 'batch_size': 8, 'grad_accmu_steps': 1, 'learning_rate': 0.0002, 'roadnetwork': 'bj_roadmap_edge_bj_True_1_merge', 'geo_file': 'bj_roadmap_edge_bj_True_1_merge_withdegree', 'rel_file': 'bj_roadmap_edge_bj_True_1_merge_withdegree', 'merge': True, 'min_freq': 1, 'seq_len': 128, 'test_every': 50, 'temperature': 0.05, 'contra_loss_type': 'simclr', 'classify_label': 'vflag', 'type_ln': 'post', 'add_cls': True, 'add_time_in_day': True, 'add_day_in_week': True, 'add_pe': True, 'add_temporal_bias': True, 'temporal_bias_dim': 64, 'use_mins_interval': False, 'add_gat': True, 'gat_heads_per_layer': [8, 16, 1], 'gat_features_per_layer': [16, 16, 256], 'gat_dropout': 0.1, 'gat_K': 1, 'gat_avg_last': True, 'load_trans_prob': True, 'append_degree2gcn': True, 'normal_feature': False, 'pooling': 'cls', 'dataset_class': 'NextLocDataset', 'executor': 'NextLocExecutor', 'evaluator': 'RegressionEvaluator', 'num_workers': 0, 'vocab_path': None, 'mlp_ratio': 4, 'pretrain_road_emb': None, 'future_mask': False, 'load_node2vec': False, 'dropout': 0.1, 'drop_path': 0.3, 'attn_drop': 0.1, 'seed': 0, 'learner': 'adamw', 'lr_eta_min': 0, 'lr_warmup_epoch': 4, 'lr_warmup_init': 1e-06, 'lr_decay': True, 'lr_scheduler': 'cosinelr', 'lr_decay_ratio': 0.1, 't_in_epochs': True, 'clip_grad_norm': True, 'max_grad_norm': 5, 'use_early_stop': True, 'patience': 10, 'log_batch': 500, 'log_every': 1, 'l2_reg': None, 'bidir_adj_mx': False, 'freeze': False, 'metrics': ['MAE', 'RMSE', 'MAPE', 'R2', 'EVAR'], 'save_modes': ['csv', 'json'], 'device': device(type='cuda', index=0), 'exp_id': 765699}
+2024-01-02 15:40:20,510 - INFO - Loading Vocab from raw_data/vocab_bj_True_1_merge.pkl
+2024-01-02 15:40:20,518 - INFO - vocab_path=raw_data/vocab_bj_True_1_merge.pkl, usr_num=75, vocab_size=27485
+2024-01-02 15:40:20,568 - INFO - Loaded file bj_roadmap_edge_bj_True_1_merge_withdegree.geo, num_nodes=27481
+2024-01-02 15:40:21,970 - INFO - Loaded file bj_roadmap_edge_bj_True_1_merge_withdegree.rel, shape=(27481, 27481), edges=51763.0
+2024-01-02 15:40:21,975 - INFO - node_features: (27481, 42)
+2024-01-02 15:40:22,921 - INFO - node_features_encoded: torch.Size([27485, 42])
+2024-01-02 15:40:23,074 - INFO - edge_index: torch.Size([2, 79209])
+2024-01-02 15:40:23,077 - INFO - Trajectory loc-transfer prob shape=torch.Size([79209, 1])
+2024-01-02 15:40:23,084 - INFO - Loading Dataset!
+2024-01-02 15:40:23,990 - INFO - Load dataset from raw_data/bj/cache_bj_train_True_True_1.pkl
+2024-01-02 15:40:24,290 - INFO - Load dataset from raw_data/bj/cache_bj_eval_True_True_1.pkl
+2024-01-02 15:40:24,339 - INFO - Load dataset from raw_data/bj/cache_bj_test_True_True_1.pkl
+2024-01-02 15:40:24,339 - INFO - Size of dataset: 13138/4380/1938
+2024-01-02 15:40:24,339 - INFO - Creating Dataloader!
+2024-01-02 15:40:24,341 - INFO - Building Downstream LinearNextLoc model
+2024-01-02 15:40:24,341 - INFO - Building BERTDownstream model
+2024-01-02 15:40:24,996 - INFO - LinearNextLoc(
+  (model): BERTDownstream(
+    (bert): BERT(
+      (embedding): BERTEmbedding(
+        (token_embedding): GAT(
+          (gat_net): Sequential(
+            (0): GATLayerImp3(
+              (linear_proj): Linear(in_features=42, out_features=128, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=128, bias=False)
+              (skip_proj): Linear(in_features=42, out_features=128, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (activation): ELU(alpha=1.0)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (1): GATLayerImp3(
+              (linear_proj): Linear(in_features=128, out_features=256, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=256, bias=False)
+              (skip_proj): Linear(in_features=128, out_features=256, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (activation): ELU(alpha=1.0)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+            (2): GATLayerImp3(
+              (linear_proj): Linear(in_features=256, out_features=256, bias=False)
+              (linear_proj_tran_prob): Linear(in_features=1, out_features=256, bias=False)
+              (skip_proj): Linear(in_features=256, out_features=256, bias=False)
+              (leakyReLU): LeakyReLU(negative_slope=0.2)
+              (softmax): Softmax(dim=-1)
+              (dropout): Dropout(p=0.1, inplace=False)
+            )
+          )
+        )
+        (position_embedding): PositionalEmbedding()
+        (daytime_embedding): Embedding(1441, 256, padding_idx=0)
+        (weekday_embedding): Embedding(8, 256, padding_idx=0)
+        (dropout): Dropout(p=0.1, inplace=False)
+      )
+      (transformer_blocks): ModuleList(
+        (0): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): Identity()
+        )
+        (1): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (2): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (3): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (4): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+        (5): TransformerBlock(
+          (attention): MultiHeadedAttention(
+            (linear_layers): ModuleList(
+              (0): Linear(in_features=256, out_features=256, bias=True)
+              (1): Linear(in_features=256, out_features=256, bias=True)
+              (2): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout): Dropout(p=0.1, inplace=False)
+            (proj): Linear(in_features=256, out_features=256, bias=True)
+            (proj_drop): Dropout(p=0.1, inplace=False)
+            (temporal_mat_bias_1): Linear(in_features=1, out_features=64, bias=True)
+            (temporal_mat_bias_2): Linear(in_features=64, out_features=1, bias=True)
+          )
+          (mlp): Mlp(
+            (fc1): Linear(in_features=256, out_features=1024, bias=True)
+            (act): GELU()
+            (fc2): Linear(in_features=1024, out_features=256, bias=True)
+            (drop): Dropout(p=0.1, inplace=False)
+          )
+          (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          (drop_path): DropPath()
+        )
+      )
+    )
+  )
+  (linear): Linear(in_features=256, out_features=27485, bias=True)
+  (softmax): LogSoftmax(dim=-1)
+)
+2024-01-02 15:40:24,999 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_fn_target	torch.Size([1, 8, 16])	cuda:0	True
+2024-01-02 15:40:25,000 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_fn_source	torch.Size([1, 8, 16])	cuda:0	True
+2024-01-02 15:40:25,000 - INFO - model.bert.embedding.token_embedding.gat_net.0.scoring_trans_prob	torch.Size([1, 8, 16])	cuda:0	True
+2024-01-02 15:40:25,000 - INFO - model.bert.embedding.token_embedding.gat_net.0.bias	torch.Size([128])	cuda:0	True
+2024-01-02 15:40:25,000 - INFO - model.bert.embedding.token_embedding.gat_net.0.linear_proj.weight	torch.Size([128, 42])	cuda:0	True
+2024-01-02 15:40:25,000 - INFO - model.bert.embedding.token_embedding.gat_net.0.linear_proj_tran_prob.weight	torch.Size([128, 1])	cuda:0	True
+2024-01-02 15:40:25,000 - INFO - model.bert.embedding.token_embedding.gat_net.0.skip_proj.weight	torch.Size([128, 42])	cuda:0	True
+2024-01-02 15:40:25,000 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_fn_target	torch.Size([1, 16, 16])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_fn_source	torch.Size([1, 16, 16])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.1.scoring_trans_prob	torch.Size([1, 16, 16])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.1.linear_proj.weight	torch.Size([256, 128])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.1.linear_proj_tran_prob.weight	torch.Size([256, 1])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.1.skip_proj.weight	torch.Size([256, 128])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_fn_target	torch.Size([1, 1, 256])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_fn_source	torch.Size([1, 1, 256])	cuda:0	True
+2024-01-02 15:40:25,001 - INFO - model.bert.embedding.token_embedding.gat_net.2.scoring_trans_prob	torch.Size([1, 1, 256])	cuda:0	True
+2024-01-02 15:40:25,002 - INFO - model.bert.embedding.token_embedding.gat_net.2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,002 - INFO - model.bert.embedding.token_embedding.gat_net.2.linear_proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,002 - INFO - model.bert.embedding.token_embedding.gat_net.2.linear_proj_tran_prob.weight	torch.Size([256, 1])	cuda:0	True
+2024-01-02 15:40:25,002 - INFO - model.bert.embedding.token_embedding.gat_net.2.skip_proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,002 - INFO - model.bert.embedding.daytime_embedding.weight	torch.Size([1441, 256])	cuda:0	True
+2024-01-02 15:40:25,002 - INFO - model.bert.embedding.weekday_embedding.weight	torch.Size([8, 256])	cuda:0	True
+2024-01-02 15:40:25,002 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,002 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,003 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,003 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,003 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,003 - INFO - model.bert.transformer_blocks.0.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,003 - INFO - model.bert.transformer_blocks.0.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,003 - INFO - model.bert.transformer_blocks.0.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,003 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-02 15:40:25,003 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,004 - INFO - model.bert.transformer_blocks.0.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.0.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.1.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.1.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,005 - INFO - model.bert.transformer_blocks.1.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,006 - INFO - model.bert.transformer_blocks.1.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,007 - INFO - model.bert.transformer_blocks.1.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,007 - INFO - model.bert.transformer_blocks.1.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,007 - INFO - model.bert.transformer_blocks.1.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,007 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,007 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,007 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,007 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,007 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-02 15:40:25,008 - INFO - model.bert.transformer_blocks.2.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.2.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.2.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.2.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.2.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.2.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.2.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,009 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,010 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,010 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,010 - INFO - model.bert.transformer_blocks.3.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,010 - INFO - model.bert.transformer_blocks.3.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,010 - INFO - model.bert.transformer_blocks.3.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,010 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-02 15:40:25,011 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-02 15:40:25,011 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-02 15:40:25,011 - INFO - model.bert.transformer_blocks.3.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-02 15:40:25,011 - INFO - model.bert.transformer_blocks.3.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-02 15:40:25,011 - INFO - model.bert.transformer_blocks.3.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-02 15:40:25,011 - INFO - model.bert.transformer_blocks.3.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-02 15:40:25,011 - INFO - model.bert.transformer_blocks.3.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,012 - INFO - model.bert.transformer_blocks.3.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,012 - INFO - model.bert.transformer_blocks.3.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,012 - INFO - model.bert.transformer_blocks.3.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,012 - INFO - model.bert.transformer_blocks.3.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,012 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,012 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,012 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,012 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-02 15:40:25,013 - INFO - model.bert.transformer_blocks.4.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.4.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.4.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.4.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.4.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.4.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.4.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.4.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.0.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,014 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.0.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.1.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.2.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.linear_layers.2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.proj.weight	torch.Size([256, 256])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.proj.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_1.weight	torch.Size([64, 1])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_1.bias	torch.Size([64])	cuda:0	True
+2024-01-02 15:40:25,015 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_2.weight	torch.Size([1, 64])	cuda:0	True
+2024-01-02 15:40:25,016 - INFO - model.bert.transformer_blocks.5.attention.temporal_mat_bias_2.bias	torch.Size([1])	cuda:0	True
+2024-01-02 15:40:25,016 - INFO - model.bert.transformer_blocks.5.mlp.fc1.weight	torch.Size([1024, 256])	cuda:0	True
+2024-01-02 15:40:25,016 - INFO - model.bert.transformer_blocks.5.mlp.fc1.bias	torch.Size([1024])	cuda:0	True
+2024-01-02 15:40:25,016 - INFO - model.bert.transformer_blocks.5.mlp.fc2.weight	torch.Size([256, 1024])	cuda:0	True
+2024-01-02 15:40:25,016 - INFO - model.bert.transformer_blocks.5.mlp.fc2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,016 - INFO - model.bert.transformer_blocks.5.norm1.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,016 - INFO - model.bert.transformer_blocks.5.norm1.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,017 - INFO - model.bert.transformer_blocks.5.norm2.weight	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,017 - INFO - model.bert.transformer_blocks.5.norm2.bias	torch.Size([256])	cuda:0	True
+2024-01-02 15:40:25,017 - INFO - linear.weight	torch.Size([27485, 256])	cuda:0	True
+2024-01-02 15:40:25,017 - INFO - linear.bias	torch.Size([27485])	cuda:0	True
+2024-01-02 15:40:25,018 - INFO - Total parameter numbers: 12384867
+2024-01-02 15:40:25,018 - INFO - You select `adamw` optimizer.
+2024-01-02 15:40:25,019 - INFO - You select `cosinelr` lr_scheduler.
+2024-01-02 15:40:25,072 - INFO - Load Pretrained-Model from libcity/cache/454824/model_cache/454824_BERTContrastiveLM_bj.pt
+2024-01-02 15:40:25,091 - INFO - Start training ...
+2024-01-02 15:40:25,091 - INFO - Num_batches: train=1643, eval=548
+2024-01-02 15:40:25,724 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 0, 'lr': 1e-06, 'loss': 10.393943786621094, 'acc(%)': 0.0}
+2024-01-02 15:41:14,240 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 500, 'lr': 1e-06, 'loss': 11.068166732788086, 'acc(%)': 0.0}
+2024-01-02 15:42:03,186 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 1000, 'lr': 1e-06, 'loss': 10.29306411743164, 'acc(%)': 0.012487512487512488}
+2024-01-02 15:42:53,613 - INFO - {'mode': 'Train', 'epoch': 0, 'iter': 1500, 'lr': 1e-06, 'loss': 11.130496978759766, 'acc(%)': 0.024983344437041973}
+2024-01-02 15:43:08,211 - INFO - Train: expid = 765699, Epoch = 0, avg_loss = 10.880446119129903, total_acc = 0.030446034404018874%.
+2024-01-02 15:43:08,211 - INFO - epoch complete!
+2024-01-02 15:43:08,211 - INFO - evaluating now!
+2024-01-02 15:43:08,242 - INFO - {'mode': 'Eval', 'epoch': 0, 'iter': 0, 'lr': 1e-06, 'loss': 10.526958465576172, 'acc(%)': 0.0}
+2024-01-02 15:43:22,955 - INFO - {'mode': 'Eval', 'epoch': 0, 'iter': 500, 'lr': 1e-06, 'loss': 10.942420959472656, 'acc(%)': 0.049900199600798396}
+2024-01-02 15:43:24,339 - INFO - Eval: expid = 765699, Epoch = 0, avg_loss = 10.794954509822201, total_acc = 0.045662100456621%.
+2024-01-02 15:43:24,339 - INFO - Epoch [0/30] (1643)  train_loss: 10.8804, train_acc: 0.03%, val_loss: 10.7950, val_acc: 0.05%, lr: 0.000051, 179.25s
+2024-01-02 15:43:24,672 - INFO - Saved model at 0
+2024-01-02 15:43:24,672 - INFO - Val loss decrease from inf to 10.7950, saving to ./libcity/cache/765699/model_cache/LinearNextLoc_bj_epoch0.tar
+2024-01-02 15:43:24,773 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 0, 'lr': 5.075e-05, 'loss': 10.623552322387695, 'acc(%)': 0.0}
+2024-01-02 15:44:16,821 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 500, 'lr': 5.075e-05, 'loss': 8.442973136901855, 'acc(%)': 2.944111776447106}
+2024-01-02 15:45:09,343 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 1000, 'lr': 5.075e-05, 'loss': 8.814348220825195, 'acc(%)': 4.670329670329671}
+2024-01-02 15:46:02,348 - INFO - {'mode': 'Train', 'epoch': 1, 'iter': 1500, 'lr': 5.075e-05, 'loss': 8.8037748336792, 'acc(%)': 5.2215189873417724}
+2024-01-02 15:46:17,493 - INFO - Train: expid = 765699, Epoch = 1, avg_loss = 8.90327045546944, total_acc = 5.411782615314356%.
+2024-01-02 15:46:17,494 - INFO - epoch complete!
+2024-01-02 15:46:17,494 - INFO - evaluating now!
+2024-01-02 15:46:17,526 - INFO - {'mode': 'Eval', 'epoch': 1, 'iter': 0, 'lr': 5.075e-05, 'loss': 8.464334487915039, 'acc(%)': 12.5}
+2024-01-02 15:46:32,869 - INFO - {'mode': 'Eval', 'epoch': 1, 'iter': 500, 'lr': 5.075e-05, 'loss': 11.027889251708984, 'acc(%)': 6.362275449101797}
+2024-01-02 15:46:34,335 - INFO - Eval: expid = 765699, Epoch = 1, avg_loss = 9.565765349070231, total_acc = 6.438356164383562%.
+2024-01-02 15:46:34,335 - INFO - Epoch [1/30] (3286)  train_loss: 8.9033, train_acc: 5.41%, val_loss: 9.5658, val_acc: 6.44%, lr: 0.000101, 189.66s
+2024-01-02 15:46:34,673 - INFO - Saved model at 1
+2024-01-02 15:46:34,673 - INFO - Val loss decrease from 10.7950 to 9.5658, saving to ./libcity/cache/765699/model_cache/LinearNextLoc_bj_epoch1.tar
+2024-01-02 15:46:34,775 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 0, 'lr': 0.0001005, 'loss': 8.86160659790039, 'acc(%)': 0.0}
+2024-01-02 15:47:28,131 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 500, 'lr': 0.0001005, 'loss': 7.638627052307129, 'acc(%)': 7.210578842315369}
+2024-01-02 15:48:21,918 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 1000, 'lr': 0.0001005, 'loss': 9.347415924072266, 'acc(%)': 6.955544455544456}
+2024-01-02 15:49:15,819 - INFO - {'mode': 'Train', 'epoch': 2, 'iter': 1500, 'lr': 0.0001005, 'loss': 7.3922224044799805, 'acc(%)': 7.070286475682878}
+2024-01-02 15:49:31,162 - INFO - Train: expid = 765699, Epoch = 2, avg_loss = 7.8355919613942, total_acc = 7.154818084944436%.
+2024-01-02 15:49:31,163 - INFO - epoch complete!
+2024-01-02 15:49:31,163 - INFO - evaluating now!
+2024-01-02 15:49:31,195 - INFO - {'mode': 'Eval', 'epoch': 2, 'iter': 0, 'lr': 0.0001005, 'loss': 7.042139053344727, 'acc(%)': 12.5}
+2024-01-02 15:49:46,865 - INFO - {'mode': 'Eval', 'epoch': 2, 'iter': 500, 'lr': 0.0001005, 'loss': 9.636594772338867, 'acc(%)': 9.056886227544911}
+2024-01-02 15:49:48,357 - INFO - Eval: expid = 765699, Epoch = 2, avg_loss = 9.018828364158875, total_acc = 9.10958904109589%.
+2024-01-02 15:49:48,357 - INFO - Epoch [2/30] (4929)  train_loss: 7.8356, train_acc: 7.15%, val_loss: 9.0188, val_acc: 9.11%, lr: 0.000150, 193.68s
+2024-01-02 15:49:48,684 - INFO - Saved model at 2
+2024-01-02 15:49:48,684 - INFO - Val loss decrease from 9.5658 to 9.0188, saving to ./libcity/cache/765699/model_cache/LinearNextLoc_bj_epoch2.tar
+2024-01-02 15:49:48,790 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 0, 'lr': 0.00015025000000000002, 'loss': 7.074362754821777, 'acc(%)': 0.0}
+2024-01-02 15:50:42,938 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 500, 'lr': 0.00015025000000000002, 'loss': 7.000452995300293, 'acc(%)': 8.507984031936127}
+2024-01-02 15:51:37,051 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 1000, 'lr': 0.00015025000000000002, 'loss': 7.419582366943359, 'acc(%)': 8.404095904095904}
+2024-01-02 15:52:31,344 - INFO - {'mode': 'Train', 'epoch': 3, 'iter': 1500, 'lr': 0.00015025000000000002, 'loss': 7.4765753746032715, 'acc(%)': 8.869087275149901}
+2024-01-02 15:52:46,685 - INFO - Train: expid = 765699, Epoch = 3, avg_loss = 6.811667136213953, total_acc = 9.042472217993607%.
+2024-01-02 15:52:46,686 - INFO - epoch complete!
+2024-01-02 15:52:46,686 - INFO - evaluating now!
+2024-01-02 15:52:46,717 - INFO - {'mode': 'Eval', 'epoch': 3, 'iter': 0, 'lr': 0.00015025000000000002, 'loss': 8.003358840942383, 'acc(%)': 12.5}
+2024-01-02 15:53:02,725 - INFO - {'mode': 'Eval', 'epoch': 3, 'iter': 500, 'lr': 0.00015025000000000002, 'loss': 6.726682186126709, 'acc(%)': 10.653692614770458}
+2024-01-02 15:53:04,349 - INFO - Eval: expid = 765699, Epoch = 3, avg_loss = 8.625510282821306, total_acc = 10.319634703196346%.
+2024-01-02 15:53:04,349 - INFO - Epoch [3/30] (6572)  train_loss: 6.8117, train_acc: 9.04%, val_loss: 8.6255, val_acc: 10.32%, lr: 0.000191, 195.66s
+2024-01-02 15:53:04,677 - INFO - Saved model at 3
+2024-01-02 15:53:04,677 - INFO - Val loss decrease from 9.0188 to 8.6255, saving to ./libcity/cache/765699/model_cache/LinearNextLoc_bj_epoch3.tar
+2024-01-02 15:53:04,783 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 0, 'lr': 0.0001913545457642601, 'loss': 4.7223944664001465, 'acc(%)': 25.0}
+2024-01-02 15:53:59,235 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 500, 'lr': 0.0001913545457642601, 'loss': 7.20360803604126, 'acc(%)': 10.978043912175648}
+2024-01-02 15:54:53,675 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 1000, 'lr': 0.0001913545457642601, 'loss': 7.110466480255127, 'acc(%)': 11.113886113886114}
+2024-01-02 15:55:48,165 - INFO - {'mode': 'Train', 'epoch': 4, 'iter': 1500, 'lr': 0.0001913545457642601, 'loss': 5.056714057922363, 'acc(%)': 11.159227181878748}
+2024-01-02 15:56:03,652 - INFO - Train: expid = 765699, Epoch = 4, avg_loss = 5.9415149196567265, total_acc = 11.181306134875932%.
+2024-01-02 15:56:03,653 - INFO - epoch complete!
+2024-01-02 15:56:03,653 - INFO - evaluating now!
+2024-01-02 15:56:03,685 - INFO - {'mode': 'Eval', 'epoch': 4, 'iter': 0, 'lr': 0.0001913545457642601, 'loss': 8.976457595825195, 'acc(%)': 12.5}
+2024-01-02 15:56:19,413 - INFO - {'mode': 'Eval', 'epoch': 4, 'iter': 500, 'lr': 0.0001913545457642601, 'loss': 12.850594520568848, 'acc(%)': 10.928143712574851}
+2024-01-02 15:56:21,107 - INFO - Eval: expid = 765699, Epoch = 4, avg_loss = 8.44439620710399, total_acc = 10.93607305936073%.
+2024-01-02 15:56:21,108 - INFO - Epoch [4/30] (8215)  train_loss: 5.9415, train_acc: 11.18%, val_loss: 8.4444, val_acc: 10.94%, lr: 0.000187, 196.43s
+2024-01-02 15:56:21,434 - INFO - Saved model at 4
+2024-01-02 15:56:21,435 - INFO - Val loss decrease from 8.6255 to 8.4444, saving to ./libcity/cache/765699/model_cache/LinearNextLoc_bj_epoch4.tar
+2024-01-02 15:56:21,545 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 0, 'lr': 0.00018660254037844388, 'loss': 5.473908424377441, 'acc(%)': 0.0}
+2024-01-02 15:57:16,356 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 500, 'lr': 0.00018660254037844388, 'loss': 5.902997016906738, 'acc(%)': 15.518962075848302}
+2024-01-02 15:58:10,922 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 1000, 'lr': 0.00018660254037844388, 'loss': 5.423943519592285, 'acc(%)': 15.122377622377622}
+2024-01-02 15:59:05,667 - INFO - {'mode': 'Train', 'epoch': 5, 'iter': 1500, 'lr': 0.00018660254037844388, 'loss': 4.855323791503906, 'acc(%)': 15.023317788141238}
+2024-01-02 15:59:21,193 - INFO - Train: expid = 765699, Epoch = 5, avg_loss = 5.063237244833512, total_acc = 14.994671943979295%.
+2024-01-02 15:59:21,194 - INFO - epoch complete!
+2024-01-02 15:59:21,194 - INFO - evaluating now!
+2024-01-02 15:59:21,226 - INFO - {'mode': 'Eval', 'epoch': 5, 'iter': 0, 'lr': 0.00018660254037844388, 'loss': 6.442221641540527, 'acc(%)': 25.0}
+2024-01-02 15:59:37,607 - INFO - {'mode': 'Eval', 'epoch': 5, 'iter': 500, 'lr': 0.00018660254037844388, 'loss': 11.94617748260498, 'acc(%)': 12.949101796407186}
+2024-01-02 15:59:39,307 - INFO - Eval: expid = 765699, Epoch = 5, avg_loss = 8.42585084079063, total_acc = 12.579908675799087%.
+2024-01-02 15:59:39,307 - INFO - Epoch [5/30] (9858)  train_loss: 5.0632, train_acc: 14.99%, val_loss: 8.4259, val_acc: 12.58%, lr: 0.000181, 197.87s
+2024-01-02 15:59:39,631 - INFO - Saved model at 5
+2024-01-02 15:59:39,631 - INFO - Val loss decrease from 8.4444 to 8.4259, saving to ./libcity/cache/765699/model_cache/LinearNextLoc_bj_epoch5.tar
+2024-01-02 15:59:39,738 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 0, 'lr': 0.00018090169943749476, 'loss': 3.2412099838256836, 'acc(%)': 50.0}
+2024-01-02 16:00:34,508 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 500, 'lr': 0.00018090169943749476, 'loss': 3.325300693511963, 'acc(%)': 20.55888223552894}
+2024-01-02 16:01:29,487 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 1000, 'lr': 0.00018090169943749476, 'loss': 4.752710342407227, 'acc(%)': 19.642857142857142}
+2024-01-02 16:02:24,345 - INFO - {'mode': 'Train', 'epoch': 6, 'iter': 1500, 'lr': 0.00018090169943749476, 'loss': 3.4707908630371094, 'acc(%)': 19.270486342438375}
+2024-01-02 16:02:39,927 - INFO - Train: expid = 765699, Epoch = 6, avg_loss = 4.3383788575427795, total_acc = 19.01354848530979%.
+2024-01-02 16:02:39,928 - INFO - epoch complete!
+2024-01-02 16:02:39,928 - INFO - evaluating now!
+2024-01-02 16:02:39,959 - INFO - {'mode': 'Eval', 'epoch': 6, 'iter': 0, 'lr': 0.00018090169943749476, 'loss': 10.086429595947266, 'acc(%)': 12.5}
+2024-01-02 16:02:55,961 - INFO - {'mode': 'Eval', 'epoch': 6, 'iter': 500, 'lr': 0.00018090169943749476, 'loss': 8.882307052612305, 'acc(%)': 13.722554890219559}
+2024-01-02 16:02:57,589 - INFO - Eval: expid = 765699, Epoch = 6, avg_loss = 8.521930595293437, total_acc = 13.561643835616438%.
+2024-01-02 16:02:57,589 - INFO - Epoch [6/30] (11501)  train_loss: 4.3384, train_acc: 19.01%, val_loss: 8.5219, val_acc: 13.56%, lr: 0.000174, 197.96s
+2024-01-02 16:02:57,716 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 0, 'lr': 0.00017431448254773944, 'loss': 3.946016788482666, 'acc(%)': 25.0}
+2024-01-02 16:03:52,947 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 500, 'lr': 0.00017431448254773944, 'loss': 3.6262402534484863, 'acc(%)': 29.890219560878243}
+2024-01-02 16:04:47,777 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 1000, 'lr': 0.00017431448254773944, 'loss': 2.731278419494629, 'acc(%)': 27.36013986013986}
+2024-01-02 16:05:42,667 - INFO - {'mode': 'Train', 'epoch': 7, 'iter': 1500, 'lr': 0.00017431448254773944, 'loss': 4.25737190246582, 'acc(%)': 26.640572951365755}
+2024-01-02 16:05:58,228 - INFO - Train: expid = 765699, Epoch = 7, avg_loss = 3.666627758549925, total_acc = 26.41954635408738%.
+2024-01-02 16:05:58,228 - INFO - epoch complete!
+2024-01-02 16:05:58,229 - INFO - evaluating now!
+2024-01-02 16:05:58,262 - INFO - {'mode': 'Eval', 'epoch': 7, 'iter': 0, 'lr': 0.00017431448254773944, 'loss': 2.653995990753174, 'acc(%)': 75.0}
+2024-01-02 16:06:15,126 - INFO - {'mode': 'Eval', 'epoch': 7, 'iter': 500, 'lr': 0.00017431448254773944, 'loss': 8.035833358764648, 'acc(%)': 14.321357285429142}
+2024-01-02 16:06:16,819 - INFO - Eval: expid = 765699, Epoch = 7, avg_loss = 8.474963326650123, total_acc = 14.360730593607308%.
+2024-01-02 16:06:16,819 - INFO - Epoch [7/30] (13144)  train_loss: 3.6666, train_acc: 26.42%, val_loss: 8.4750, val_acc: 14.36%, lr: 0.000167, 199.23s
+2024-01-02 16:06:16,947 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 0, 'lr': 0.00016691306063588583, 'loss': 2.261955738067627, 'acc(%)': 62.5}
+2024-01-02 16:07:12,473 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 500, 'lr': 0.00016691306063588583, 'loss': 2.179457187652588, 'acc(%)': 41.16766467065868}
+2024-01-02 16:08:07,778 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 1000, 'lr': 0.00016691306063588583, 'loss': 3.006183624267578, 'acc(%)': 38.37412587412587}
+2024-01-02 16:09:02,894 - INFO - {'mode': 'Train', 'epoch': 8, 'iter': 1500, 'lr': 0.00016691306063588583, 'loss': 3.6824159622192383, 'acc(%)': 36.758827448367754}
+2024-01-02 16:09:18,482 - INFO - Train: expid = 765699, Epoch = 8, avg_loss = 3.015659233772114, total_acc = 36.27644999238849%.
+2024-01-02 16:09:18,482 - INFO - epoch complete!
+2024-01-02 16:09:18,483 - INFO - evaluating now!
+2024-01-02 16:09:18,514 - INFO - {'mode': 'Eval', 'epoch': 8, 'iter': 0, 'lr': 0.00016691306063588583, 'loss': 10.883810043334961, 'acc(%)': 25.0}
+2024-01-02 16:09:34,970 - INFO - {'mode': 'Eval', 'epoch': 8, 'iter': 500, 'lr': 0.00016691306063588583, 'loss': 9.19448471069336, 'acc(%)': 14.895209580838323}
+2024-01-02 16:09:36,513 - INFO - Eval: expid = 765699, Epoch = 8, avg_loss = 8.600301789584226, total_acc = 15.182648401826485%.
+2024-01-02 16:09:36,513 - INFO - Epoch [8/30] (14787)  train_loss: 3.0157, train_acc: 36.28%, val_loss: 8.6003, val_acc: 15.18%, lr: 0.000159, 199.69s
+2024-01-02 16:09:36,632 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 0, 'lr': 0.00015877852522924732, 'loss': 2.148270606994629, 'acc(%)': 62.5}
+2024-01-02 16:10:31,645 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 500, 'lr': 0.00015877852522924732, 'loss': 2.43765926361084, 'acc(%)': 54.615768463073856}
+2024-01-02 16:11:25,230 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 1000, 'lr': 0.00015877852522924732, 'loss': 3.058140277862549, 'acc(%)': 50.786713286713294}
+2024-01-02 16:12:17,302 - INFO - {'mode': 'Train', 'epoch': 9, 'iter': 1500, 'lr': 0.00015877852522924732, 'loss': 2.6722800731658936, 'acc(%)': 48.392738174550296}
+2024-01-02 16:12:31,614 - INFO - Train: expid = 765699, Epoch = 9, avg_loss = 2.4394087715224417, total_acc = 47.68610138529456%.
+2024-01-02 16:12:31,614 - INFO - epoch complete!
+2024-01-02 16:12:31,615 - INFO - evaluating now!
+2024-01-02 16:12:31,645 - INFO - {'mode': 'Eval', 'epoch': 9, 'iter': 0, 'lr': 0.00015877852522924732, 'loss': 9.770060539245605, 'acc(%)': 12.5}
+2024-01-02 16:12:46,094 - INFO - {'mode': 'Eval', 'epoch': 9, 'iter': 500, 'lr': 0.00015877852522924732, 'loss': 9.975154876708984, 'acc(%)': 16.367265469061877}
+2024-01-02 16:12:47,444 - INFO - Eval: expid = 765699, Epoch = 9, avg_loss = 8.785130147193664, total_acc = 16.461187214611872%.
+2024-01-02 16:12:47,444 - INFO - Epoch [9/30] (16430)  train_loss: 2.4394, train_acc: 47.69%, val_loss: 8.7851, val_acc: 16.46%, lr: 0.000150, 190.93s
+2024-01-02 16:12:47,551 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 0, 'lr': 0.00015000000000000001, 'loss': 1.5654773712158203, 'acc(%)': 75.0}
+2024-01-02 16:13:38,125 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 500, 'lr': 0.00015000000000000001, 'loss': 2.264127731323242, 'acc(%)': 64.59580838323353}
+2024-01-02 16:14:29,074 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 1000, 'lr': 0.00015000000000000001, 'loss': 1.9972107410430908, 'acc(%)': 61.98801198801199}
+2024-01-02 16:15:20,273 - INFO - {'mode': 'Train', 'epoch': 10, 'iter': 1500, 'lr': 0.00015000000000000001, 'loss': 1.786468267440796, 'acc(%)': 59.80179880079947}
+2024-01-02 16:15:34,903 - INFO - Train: expid = 765699, Epoch = 10, avg_loss = 1.9200065863660563, total_acc = 59.30126351042777%.
+2024-01-02 16:15:34,903 - INFO - epoch complete!
+2024-01-02 16:15:34,904 - INFO - evaluating now!
+2024-01-02 16:15:34,933 - INFO - {'mode': 'Eval', 'epoch': 10, 'iter': 0, 'lr': 0.00015000000000000001, 'loss': 12.05903148651123, 'acc(%)': 25.0}
+2024-01-02 16:15:49,571 - INFO - {'mode': 'Eval', 'epoch': 10, 'iter': 500, 'lr': 0.00015000000000000001, 'loss': 8.5857515335083, 'acc(%)': 16.317365269461078}
+2024-01-02 16:15:50,948 - INFO - Eval: expid = 765699, Epoch = 10, avg_loss = 8.88917327210239, total_acc = 16.666666666666664%.
+2024-01-02 16:15:50,948 - INFO - Epoch [10/30] (18073)  train_loss: 1.9200, train_acc: 59.30%, val_loss: 8.8892, val_acc: 16.67%, lr: 0.000141, 183.50s
+2024-01-02 16:15:51,055 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 0, 'lr': 0.00014067366430758004, 'loss': 1.2923585176467896, 'acc(%)': 75.0}
+2024-01-02 16:16:42,359 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 500, 'lr': 0.00014067366430758004, 'loss': 1.288961410522461, 'acc(%)': 75.69860279441117}
+2024-01-02 16:17:33,387 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 1000, 'lr': 0.00014067366430758004, 'loss': 1.3004523515701294, 'acc(%)': 72.72727272727273}
+2024-01-02 16:18:24,537 - INFO - {'mode': 'Train', 'epoch': 11, 'iter': 1500, 'lr': 0.00014067366430758004, 'loss': 1.5107550621032715, 'acc(%)': 69.97001998667555}
+2024-01-02 16:18:38,986 - INFO - Train: expid = 765699, Epoch = 11, avg_loss = 1.4802593144856553, total_acc = 69.26472826914294%.
+2024-01-02 16:18:38,986 - INFO - epoch complete!
+2024-01-02 16:18:38,987 - INFO - evaluating now!
+2024-01-02 16:18:39,017 - INFO - {'mode': 'Eval', 'epoch': 11, 'iter': 0, 'lr': 0.00014067366430758004, 'loss': 9.968433380126953, 'acc(%)': 12.5}
+2024-01-02 16:18:53,627 - INFO - {'mode': 'Eval', 'epoch': 11, 'iter': 500, 'lr': 0.00014067366430758004, 'loss': 10.216300964355469, 'acc(%)': 16.64171656686627}
+2024-01-02 16:18:55,011 - INFO - Eval: expid = 765699, Epoch = 11, avg_loss = 9.152505639698951, total_acc = 16.78082191780822%.
+2024-01-02 16:18:55,011 - INFO - Epoch [11/30] (19716)  train_loss: 1.4803, train_acc: 69.26%, val_loss: 9.1525, val_acc: 16.78%, lr: 0.000131, 184.06s
+2024-01-02 16:18:55,115 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 0, 'lr': 0.00013090169943749476, 'loss': 1.2954182624816895, 'acc(%)': 87.5}
+2024-01-02 16:19:46,419 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 500, 'lr': 0.00013090169943749476, 'loss': 0.7259010672569275, 'acc(%)': 81.53692614770459}
+2024-01-02 16:20:37,620 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 1000, 'lr': 0.00013090169943749476, 'loss': 1.1178481578826904, 'acc(%)': 79.5954045954046}
+2024-01-02 16:21:28,815 - INFO - {'mode': 'Train', 'epoch': 12, 'iter': 1500, 'lr': 0.00013090169943749476, 'loss': 0.7158499956130981, 'acc(%)': 78.42271818787475}
+2024-01-02 16:21:43,362 - INFO - Train: expid = 765699, Epoch = 12, avg_loss = 1.1167260411577258, total_acc = 77.95707109149033%.
+2024-01-02 16:21:43,362 - INFO - epoch complete!
+2024-01-02 16:21:43,363 - INFO - evaluating now!
+2024-01-02 16:21:43,393 - INFO - {'mode': 'Eval', 'epoch': 12, 'iter': 0, 'lr': 0.00013090169943749476, 'loss': 8.517206192016602, 'acc(%)': 25.0}
+2024-01-02 16:21:58,177 - INFO - {'mode': 'Eval', 'epoch': 12, 'iter': 500, 'lr': 0.00013090169943749476, 'loss': 10.777067184448242, 'acc(%)': 17.21556886227545}
+2024-01-02 16:21:59,560 - INFO - Eval: expid = 765699, Epoch = 12, avg_loss = 9.24299169435893, total_acc = 17.168949771689498%.
+2024-01-02 16:21:59,561 - INFO - Epoch [12/30] (21359)  train_loss: 1.1167, train_acc: 77.96%, val_loss: 9.2430, val_acc: 17.17%, lr: 0.000121, 184.55s
+2024-01-02 16:21:59,667 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 0, 'lr': 0.00012079116908177593, 'loss': 0.37395915389060974, 'acc(%)': 100.0}
+2024-01-02 16:22:50,837 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 500, 'lr': 0.00012079116908177593, 'loss': 1.7527742385864258, 'acc(%)': 86.97604790419162}
+2024-01-02 16:23:42,364 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 1000, 'lr': 0.00012079116908177593, 'loss': 0.6691333055496216, 'acc(%)': 85.22727272727273}
+2024-01-02 16:24:33,749 - INFO - {'mode': 'Train', 'epoch': 13, 'iter': 1500, 'lr': 0.00012079116908177593, 'loss': 0.8493028283119202, 'acc(%)': 83.76915389740172}
+2024-01-02 16:24:48,323 - INFO - Train: expid = 765699, Epoch = 13, avg_loss = 0.8555165498854453, total_acc = 83.23184655198659%.
+2024-01-02 16:24:48,324 - INFO - epoch complete!
+2024-01-02 16:24:48,324 - INFO - evaluating now!
+2024-01-02 16:24:48,355 - INFO - {'mode': 'Eval', 'epoch': 13, 'iter': 0, 'lr': 0.00012079116908177593, 'loss': 11.113849639892578, 'acc(%)': 0.0}
+2024-01-02 16:25:03,077 - INFO - {'mode': 'Eval', 'epoch': 13, 'iter': 500, 'lr': 0.00012079116908177593, 'loss': 9.702701568603516, 'acc(%)': 16.29241516966068}
+2024-01-02 16:25:04,453 - INFO - Eval: expid = 765699, Epoch = 13, avg_loss = 9.561638305176338, total_acc = 16.552511415525114%.
+2024-01-02 16:25:04,453 - INFO - Epoch [13/30] (23002)  train_loss: 0.8555, train_acc: 83.23%, val_loss: 9.5616, val_acc: 16.55%, lr: 0.000110, 184.89s
+2024-01-02 16:25:04,558 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 0, 'lr': 0.00011045284632676536, 'loss': 0.5617642402648926, 'acc(%)': 87.5}
+2024-01-02 16:25:55,987 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 500, 'lr': 0.00011045284632676536, 'loss': 0.3587765693664551, 'acc(%)': 89.84530938123753}
+2024-01-02 16:26:47,261 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 1000, 'lr': 0.00011045284632676536, 'loss': 0.9362078309059143, 'acc(%)': 88.91108891108891}
+2024-01-02 16:27:38,532 - INFO - {'mode': 'Train', 'epoch': 14, 'iter': 1500, 'lr': 0.00011045284632676536, 'loss': 1.4894278049468994, 'acc(%)': 87.9163890739507}
+2024-01-02 16:27:53,095 - INFO - Train: expid = 765699, Epoch = 14, avg_loss = 0.6596446469559991, total_acc = 87.59324098036231%.
+2024-01-02 16:27:53,096 - INFO - epoch complete!
+2024-01-02 16:27:53,096 - INFO - evaluating now!
+2024-01-02 16:27:53,126 - INFO - {'mode': 'Eval', 'epoch': 14, 'iter': 0, 'lr': 0.00011045284632676536, 'loss': 11.106622695922852, 'acc(%)': 25.0}
+2024-01-02 16:28:07,906 - INFO - {'mode': 'Eval', 'epoch': 14, 'iter': 500, 'lr': 0.00011045284632676536, 'loss': 14.318046569824219, 'acc(%)': 17.490019960079838}
+2024-01-02 16:28:09,294 - INFO - Eval: expid = 765699, Epoch = 14, avg_loss = 9.683736419677734, total_acc = 17.23744292237443%.
+2024-01-02 16:28:09,295 - INFO - Epoch [14/30] (24645)  train_loss: 0.6596, train_acc: 87.59%, val_loss: 9.6837, val_acc: 17.24%, lr: 0.000100, 184.84s
+2024-01-02 16:28:09,403 - INFO - {'mode': 'Train', 'epoch': 15, 'iter': 0, 'lr': 0.00010000000000000003, 'loss': 0.317042738199234, 'acc(%)': 100.0}
+2024-01-02 16:29:00,576 - INFO - {'mode': 'Train', 'epoch': 15, 'iter': 500, 'lr': 0.00010000000000000003, 'loss': 0.8634629249572754, 'acc(%)': 92.93912175648703}
+2024-01-02 16:29:51,988 - INFO - {'mode': 'Train', 'epoch': 15, 'iter': 1000, 'lr': 0.00010000000000000003, 'loss': 0.2265591025352478, 'acc(%)': 91.73326673326673}
+2024-01-02 16:30:43,396 - INFO - {'mode': 'Train', 'epoch': 15, 'iter': 1500, 'lr': 0.00010000000000000003, 'loss': 0.9116570353507996, 'acc(%)': 90.68121252498335}
+2024-01-02 16:30:57,962 - INFO - Train: expid = 765699, Epoch = 15, avg_loss = 0.515588194694416, total_acc = 90.43233368853707%.
+2024-01-02 16:30:57,963 - INFO - epoch complete!
+2024-01-02 16:30:57,963 - INFO - evaluating now!
+2024-01-02 16:30:57,993 - INFO - {'mode': 'Eval', 'epoch': 15, 'iter': 0, 'lr': 0.00010000000000000003, 'loss': 11.901686668395996, 'acc(%)': 0.0}
+2024-01-02 16:31:12,774 - INFO - {'mode': 'Eval', 'epoch': 15, 'iter': 500, 'lr': 0.00010000000000000003, 'loss': 11.598930358886719, 'acc(%)': 17.465069860279442}
+2024-01-02 16:31:14,159 - INFO - Eval: expid = 765699, Epoch = 15, avg_loss = 9.649160379688489, total_acc = 17.328767123287673%.
+2024-01-02 16:31:14,159 - INFO - Epoch [15/30] (26288)  train_loss: 0.5156, train_acc: 90.43%, val_loss: 9.6492, val_acc: 17.33%, lr: 0.000090, 184.86s
+2024-01-02 16:31:14,159 - WARNING - Early stopping at epoch: 15
+2024-01-02 16:31:14,160 - INFO - Trained totally 16 epochs, average train time is 173.549s, average eval time is 16.893s, average train acc is 40.31%, average eval acc is 13.17%
+2024-01-02 16:31:14,313 - INFO - Loaded model at 5
+2024-01-02 16:31:14,399 - INFO - Save png at ./libcity/cache/765699/765699_loss.png
+2024-01-02 16:31:14,462 - INFO - Save png at ./libcity/cache/765699/765699_lr.png
+2024-01-02 16:31:14,524 - INFO - Save png at ./libcity/cache/765699/765699_acc.png
+2024-01-02 16:31:14,826 - INFO - Saved model at ./libcity/cache/765699/model_cache/765699_LinearNextLoc_bj.pt
+2024-01-02 16:31:14,827 - INFO - Start evaluating ...
+2024-01-02 16:31:14,859 - INFO - {'mode': 'Test', 'epoch': 0, 'iter': 0, 'lr': 0.00018090169943749476, 'loss': 8.876501083374023, 'acc(%)': 0.0}
+2024-01-02 16:31:22,191 - INFO - Test: expid = 765699, Epoch = 0, avg_loss = 8.154900037098226, total_acc = 7.223942208462332%.
+2024-01-02 16:31:22,194 - INFO - Test time 7.366374254226685s.
